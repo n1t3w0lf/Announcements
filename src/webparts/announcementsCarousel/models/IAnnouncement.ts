@@ -7,6 +7,7 @@ export interface IAnnouncement {
   ValidTo: Date;
   CelebrationIcon?: CelebrationType;
   CelebrationIconPosition?: IconPosition;
+  CustomIconUrl?: string;
   IsActive?: boolean;
 }
 
@@ -41,4 +42,5 @@ export interface IAnnouncementListItem {
   ValidTo: string;
   CelebrationIcon: string;
   CelebrationIconPosition: string;
+  CustomIconUrl: string;
 }

@@ -17,7 +17,7 @@ export class AnnouncementDataService {
 
       // Get announcements where ValidFrom <= Today <= ValidTo
       const endpoint = `${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.listName}')/items?` +
-        `$select=Id,Title,Description,AnnouncementImage,ValidFrom,ValidTo,CelebrationIcon,CelebrationIconPosition&` +
+        `$select=Id,Title,Description,AnnouncementImage,ValidFrom,ValidTo,CelebrationIcon,CelebrationIconPosition,CustomIconUrl&` +
         `$filter=ValidFrom le datetime'${today}' and ValidTo ge datetime'${today}'&` +
         `$orderby=ValidFrom desc`;
 
@@ -47,7 +47,7 @@ export class AnnouncementDataService {
   public async getAllAnnouncements(): Promise<IAnnouncement[]> {
     try {
       const endpoint = `${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.listName}')/items?` +
-        `$select=Id,Title,Description,AnnouncementImage,ValidFrom,ValidTo,CelebrationIcon,CelebrationIconPosition&` +
+        `$select=Id,Title,Description,AnnouncementImage,ValidFrom,ValidTo,CelebrationIcon,CelebrationIconPosition,CustomIconUrl&` +
         `$orderby=ValidFrom desc`;
 
       const response: SPHttpClientResponse = await this.context.spHttpClient.get(
@@ -76,7 +76,7 @@ export class AnnouncementDataService {
   public async getAnnouncementById(id: number): Promise<IAnnouncement | null> {
     try {
       const endpoint = `${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.listName}')/items(${id})?` +
-        `$select=Id,Title,Description,AnnouncementImage,ValidFrom,ValidTo,CelebrationIcon,CelebrationIconPosition`;
+        `$select=Id,Title,Description,AnnouncementImage,ValidFrom,ValidTo,CelebrationIcon,CelebrationIconPosition,CustomIconUrl`;
 
       const response: SPHttpClientResponse = await this.context.spHttpClient.get(
         endpoint,
@@ -112,6 +112,7 @@ export class AnnouncementDataService {
       ValidTo: new Date(item.ValidTo),
       CelebrationIcon: (item.CelebrationIcon as CelebrationType) || CelebrationType.None,
       CelebrationIconPosition: (item.CelebrationIconPosition as IconPosition) || IconPosition.TopRight,
+      CustomIconUrl: item.CustomIconUrl?.Url || item.CustomIconUrl || '',
       IsActive: this.isAnnouncementActive(new Date(item.ValidFrom), new Date(item.ValidTo))
     }));
   }

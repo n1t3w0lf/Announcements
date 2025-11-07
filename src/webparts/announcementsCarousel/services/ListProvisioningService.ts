@@ -139,6 +139,12 @@ export class ListProvisioningService {
         'Required': false,
         'Choices': ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'center'],
         'DefaultValue': 'topRight'
+      },
+      {
+        '@odata.type': 'SP.FieldUrl',
+        'FieldTypeKind': 11,
+        'Title': 'CustomIconUrl',
+        'Required': false
       }
     ];
 
@@ -170,7 +176,7 @@ export class ListProvisioningService {
 
   private static async verifyColumns(context: WebPartContext): Promise<void> {
     // Check if all required columns exist, if not create them
-    const requiredColumns = ['Description', 'AnnouncementImage', 'ValidFrom', 'ValidTo', 'CelebrationIcon', 'CelebrationIconPosition'];
+    const requiredColumns = ['Description', 'AnnouncementImage', 'ValidFrom', 'ValidTo', 'CelebrationIcon', 'CelebrationIconPosition', 'CustomIconUrl'];
     const endpoint = `${context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.LIST_NAME}')/fields?$select=Title`;
 
     try {

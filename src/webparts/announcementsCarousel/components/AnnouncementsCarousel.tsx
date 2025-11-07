@@ -150,12 +150,40 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
       return null;
     }
 
+    // Check if it's a custom icon with a URL
+    if (announcement.CelebrationIcon === CelebrationType.Custom && announcement.CustomIconUrl) {
+      const positionClass = `${styles.celebrationIcon} ${styles[announcement.CelebrationIconPosition || 'topRight']}`;
+
+      return (
+        <div
+          className={positionClass}
+          style={{
+            width: `${this.props.celebrationIconSize + 20}px`,
+            height: `${this.props.celebrationIconSize + 20}px`,
+            overflow: 'hidden'
+          }}
+          title="Custom Icon"
+        >
+          <img
+            src={announcement.CustomIconUrl}
+            alt="Custom celebration icon"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              borderRadius: '50%'
+            }}
+          />
+        </div>
+      );
+    }
+
     const iconConfig = CelebrationIconService.getIconConfig(announcement.CelebrationIcon);
     if (!iconConfig) {
       return null;
     }
 
-    const positionClass = `${styles.celebrationIcon} ${styles[announcement.CelebrationIconPosition || 'top-right']}`;
+    const positionClass = `${styles.celebrationIcon} ${styles[announcement.CelebrationIconPosition || 'topRight']}`;
     const animationClass = iconConfig.animation ? styles[iconConfig.animation] : '';
 
     return (
@@ -220,12 +248,6 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
               dangerouslySetInnerHTML={{ __html: announcement.Description }}
             />
           )}
-
-          <div className={styles.dateInfo}>
-            <span className={styles.dateLabel}>
-              Valid: {announcement.ValidFrom.toLocaleDateString()} - {announcement.ValidTo.toLocaleDateString()}
-            </span>
-          </div>
         </div>
       </div>
     );
@@ -339,7 +361,6 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
           {this.renderAnnouncement(currentAnnouncement)}
           {this.renderNavigationArrows()}
           {this.renderNavigationDots()}
-          {this.renderPlayPauseButton()}
         </div>
       </div>
     );
