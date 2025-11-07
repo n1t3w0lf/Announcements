@@ -65,9 +65,7 @@ export class ListProvisioningService {
     const endpoint = `${context.pageContext.web.absoluteUrl}/_api/web/lists`;
 
     const listData = {
-      '__metadata': {
-        'type': 'SP.List'
-      },
+      '@odata.type': 'SP.List',
       'BaseTemplate': 100,
       'Title': this.LIST_NAME,
       'Description': this.LIST_DESCRIPTION,
@@ -80,8 +78,8 @@ export class ListProvisioningService {
       SPHttpClient.configurations.v1,
       {
         headers: {
-          'Accept': 'application/json;odata=verbose',
-          'Content-Type': 'application/json;odata=verbose'
+          'Accept': 'application/json;odata=minimalmetadata',
+          'Content-Type': 'application/json;odata=minimalmetadata'
         },
         body: JSON.stringify(listData)
       }
@@ -99,7 +97,7 @@ export class ListProvisioningService {
     // Define columns with proper metadata
     const columns = [
       {
-        '__metadata': { 'type': 'SP.FieldMultiLineText' },
+        '@odata.type': 'SP.FieldMultiLineText',
         'FieldTypeKind': 3,
         'Title': 'Description',
         'Required': false,
@@ -107,45 +105,39 @@ export class ListProvisioningService {
         'NumberOfLines': 6
       },
       {
-        '__metadata': { 'type': 'SP.FieldUrl' },
+        '@odata.type': 'SP.FieldUrl',
         'FieldTypeKind': 11,
         'Title': 'AnnouncementImage',
         'Required': false
       },
       {
-        '__metadata': { 'type': 'SP.FieldDateTime' },
+        '@odata.type': 'SP.FieldDateTime',
         'FieldTypeKind': 4,
         'Title': 'ValidFrom',
         'Required': true,
         'DisplayFormat': 1
       },
       {
-        '__metadata': { 'type': 'SP.FieldDateTime' },
+        '@odata.type': 'SP.FieldDateTime',
         'FieldTypeKind': 4,
         'Title': 'ValidTo',
         'Required': true,
         'DisplayFormat': 1
       },
       {
-        '__metadata': { 'type': 'SP.FieldChoice' },
+        '@odata.type': 'SP.FieldChoice',
         'FieldTypeKind': 6,
         'Title': 'CelebrationIcon',
         'Required': false,
-        'Choices': {
-          '__metadata': { 'type': 'Collection(Edm.String)' },
-          'results': ['None', 'Birthday', 'Anniversary', 'Achievement', 'Celebration', 'NewHire', 'Promotion', 'Holiday', 'Custom']
-        },
+        'Choices': ['None', 'Birthday', 'Anniversary', 'Achievement', 'Celebration', 'NewHire', 'Promotion', 'Holiday', 'Custom'],
         'DefaultValue': 'None'
       },
       {
-        '__metadata': { 'type': 'SP.FieldChoice' },
+        '@odata.type': 'SP.FieldChoice',
         'FieldTypeKind': 6,
         'Title': 'CelebrationIconPosition',
         'Required': false,
-        'Choices': {
-          '__metadata': { 'type': 'Collection(Edm.String)' },
-          'results': ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'center']
-        },
+        'Choices': ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'center'],
         'DefaultValue': 'topRight'
       }
     ];
@@ -157,8 +149,8 @@ export class ListProvisioningService {
           SPHttpClient.configurations.v1,
           {
             headers: {
-              'Accept': 'application/json;odata=verbose',
-              'Content-Type': 'application/json;odata=verbose'
+              'Accept': 'application/json;odata=minimalmetadata',
+              'Content-Type': 'application/json;odata=minimalmetadata'
             },
             body: JSON.stringify(column)
           }
@@ -215,8 +207,8 @@ export class ListProvisioningService {
           SPHttpClient.configurations.v1,
           {
             headers: {
-              'Accept': 'application/json;odata=verbose',
-              'Content-Type': 'application/json;odata=verbose'
+              'Accept': 'application/json;odata=minimalmetadata',
+              'Content-Type': 'application/json;odata=minimalmetadata'
             }
           }
         );
