@@ -47,8 +47,7 @@ export class ListProvisioningService {
     const endpoint = `${context.pageContext.web.absoluteUrl}/_api/web/lists`;
 
     const listData = {
-      '__metadata': { 'type': 'SP.List' },
-      'BaseTemplate': 100, // Generic List
+      'BaseTemplate': 100,
       'Title': this.LIST_NAME,
       'Description': this.LIST_DESCRIPTION,
       'ContentTypesEnabled': false,
@@ -60,9 +59,8 @@ export class ListProvisioningService {
       SPHttpClient.configurations.v1,
       {
         headers: {
-          'Accept': 'application/json;odata=nometadata',
-          'Content-Type': 'application/json;odata=nometadata',
-          'odata-version': ''
+          'Accept': 'application/json;odata=verbose',
+          'Content-Type': 'application/json;odata=verbose'
         },
         body: JSON.stringify(listData)
       }
@@ -75,83 +73,84 @@ export class ListProvisioningService {
   }
 
   private static async createColumns(context: WebPartContext): Promise<void> {
+    const baseUrl = `${context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.LIST_NAME}')/fields`;
+
+    // Define columns with their XML schema
     const columns = [
       {
-        '__metadata': { 'type': 'SP.FieldMultiLineText' },
-        'FieldTypeKind': 3,
-        'Title': 'Description',
-        'Required': false,
-        'RichText': true,
-        'NumberOfLines': 6
+        parameters: {
+          'FieldTypeKind': 3,
+          'Title': 'Description',
+          'Required': false,
+          'RichText': true,
+          'NumberOfLines': 6
+        }
       },
       {
-        '__metadata': { 'type': 'SP.FieldUrl' },
-        'FieldTypeKind': 11,
-        'Title': 'AnnouncementImage',
-        'Required': false,
-        'DisplayFormat': 0
+        parameters: {
+          'FieldTypeKind': 11,
+          'Title': 'AnnouncementImage',
+          'Required': false
+        }
       },
       {
-        '__metadata': { 'type': 'SP.FieldDateTime' },
-        'FieldTypeKind': 4,
-        'Title': 'ValidFrom',
-        'Required': true,
-        'DisplayFormat': 1 // DateTime
+        parameters: {
+          'FieldTypeKind': 4,
+          'Title': 'ValidFrom',
+          'Required': true,
+          'DisplayFormat': 1
+        }
       },
       {
-        '__metadata': { 'type': 'SP.FieldDateTime' },
-        'FieldTypeKind': 4,
-        'Title': 'ValidTo',
-        'Required': true,
-        'DisplayFormat': 1 // DateTime
+        parameters: {
+          'FieldTypeKind': 4,
+          'Title': 'ValidTo',
+          'Required': true,
+          'DisplayFormat': 1
+        }
       },
       {
-        '__metadata': { 'type': 'SP.FieldChoice' },
-        'FieldTypeKind': 6,
-        'Title': 'CelebrationIcon',
-        'Required': false,
-        'Choices': {
-          '__metadata': { 'type': 'Collection(Edm.String)' },
-          'results': ['None', 'Birthday', 'Anniversary', 'Achievement', 'Celebration', 'NewHire', 'Promotion', 'Holiday', 'Custom']
-        },
-        'DefaultValue': 'None'
+        parameters: {
+          'FieldTypeKind': 6,
+          'Title': 'CelebrationIcon',
+          'Required': false,
+          'Choices': ['None', 'Birthday', 'Anniversary', 'Achievement', 'Celebration', 'NewHire', 'Promotion', 'Holiday', 'Custom'],
+          'DefaultValue': 'None'
+        }
       },
       {
-        '__metadata': { 'type': 'SP.FieldChoice' },
-        'FieldTypeKind': 6,
-        'Title': 'CelebrationIconPosition',
-        'Required': false,
-        'Choices': {
-          '__metadata': { 'type': 'Collection(Edm.String)' },
-          'results': ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'center']
-        },
-        'DefaultValue': 'topRight'
+        parameters: {
+          'FieldTypeKind': 6,
+          'Title': 'CelebrationIconPosition',
+          'Required': false,
+          'Choices': ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'center'],
+          'DefaultValue': 'topRight'
+        }
       }
     ];
-
-    const endpoint = `${context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.LIST_NAME}')/fields`;
 
     for (const column of columns) {
       try {
         const response: SPHttpClientResponse = await context.spHttpClient.post(
-          endpoint,
+          baseUrl,
           SPHttpClient.configurations.v1,
           {
             headers: {
-              'Accept': 'application/json;odata=nometadata',
-              'Content-Type': 'application/json;odata=nometadata',
-              'odata-version': ''
+              'Accept': 'application/json;odata=verbose',
+              'Content-Type': 'application/json;odata=verbose'
             },
-            body: JSON.stringify(column)
+            body: JSON.stringify(column.parameters)
           }
         );
 
         if (!response.ok) {
           const errorText = await response.text();
-          console.warn(`Warning creating column ${column.Title}: ${errorText}`);
+          console.warn(`Warning creating column ${column.parameters.Title}: ${errorText}`);
+        } else {
+          console.log(`Column ${column.parameters.Title} created successfully`);
         }
       } catch (error) {
-        console.warn(`Error creating column ${column.Title}:`, error);
+        console.warn(`Error creating column ${column.parameters.Title}:`, error);
       }
     }
   }
@@ -195,8 +194,8 @@ export class ListProvisioningService {
           SPHttpClient.configurations.v1,
           {
             headers: {
-              'Accept': 'application/json;odata=nometadata',
-              'Content-Type': 'application/json;odata=nometadata'
+              'Accept': 'application/json;odata=verbose',
+              'Content-Type': 'application/json;odata=verbose'
             }
           }
         );
