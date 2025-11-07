@@ -23,10 +23,10 @@ export enum CelebrationType {
 }
 
 export enum IconPosition {
-  TopLeft = 'top-left',
-  TopRight = 'top-right',
-  BottomLeft = 'bottom-left',
-  BottomRight = 'bottom-right',
+  TopLeft = 'topLeft',
+  TopRight = 'topRight',
+  BottomLeft = 'bottomLeft',
+  BottomRight = 'bottomRight',
   Center = 'center'
 }
 

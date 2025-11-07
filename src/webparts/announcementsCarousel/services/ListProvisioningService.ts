@@ -123,9 +123,9 @@ export class ListProvisioningService {
         'Required': false,
         'Choices': {
           '__metadata': { 'type': 'Collection(Edm.String)' },
-          'results': ['top-left', 'top-right', 'bottom-left', 'bottom-right', 'center']
+          'results': ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'center']
         },
-        'DefaultValue': 'top-right'
+        'DefaultValue': 'topRight'
       }
     ];
 

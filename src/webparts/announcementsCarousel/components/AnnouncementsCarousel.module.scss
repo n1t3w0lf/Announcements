@@ -86,22 +86,22 @@
       transform: scale(1.1);
     }
 
-    &.top-left {
+    &.topLeft {
       top: 20px;
       left: 20px;
     }
 
-    &.top-right {
+    &.topRight {
       top: 20px;
       right: 20px;
     }
 
-    &.bottom-left {
+    &.bottomLeft {
       bottom: 20px;
       left: 20px;
     }
 
-    &.bottom-right {
+    &.bottomRight {
       bottom: 20px;
       right: 20px;
     }
@@ -382,19 +382,19 @@
     }
 
     .celebrationIcon {
-      &.top-left, &.top-right {
+      &.topLeft, &.topRight {
         top: 10px;
       }
 
-      &.bottom-left, &.bottom-right {
+      &.bottomLeft, &.bottomRight {
         bottom: 10px;
       }
 
-      &.top-left, &.bottom-left {
+      &.topLeft, &.bottomLeft {
         left: 10px;
       }
 
-      &.top-right, &.bottom-right {
+      &.topRight, &.bottomRight {
         right: 10px;
       }
     }

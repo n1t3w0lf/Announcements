@@ -18,7 +18,7 @@ export interface IAnnouncementsCarouselState {
 
 export default class AnnouncementsCarousel extends React.Component<IAnnouncementsCarouselProps, IAnnouncementsCarouselState> {
   private dataService: AnnouncementDataService;
-  private rotationTimer: NodeJS.Timeout | null = null;
+  private rotationTimer: number | null = null;
 
   constructor(props: IAnnouncementsCarouselProps) {
     super(props);
