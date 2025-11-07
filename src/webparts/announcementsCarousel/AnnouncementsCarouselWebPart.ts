@@ -23,7 +23,8 @@ export interface IAnnouncementsCarouselWebPartProps {
   titleFontSize: number;
   descriptionFontSize: number;
   backgroundColor: string;
-  textColor: string;
+  titleColor: string;
+  descriptionColor: string;
   height: number;
   enableTransitions: boolean;
   transitionEffect: 'fade' | 'slide' | 'zoom';
@@ -67,7 +68,8 @@ export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<
         titleFontSize: this.properties.titleFontSize || 32,
         descriptionFontSize: this.properties.descriptionFontSize || 16,
         backgroundColor: this.properties.backgroundColor || '#ffffff',
-        textColor: this.properties.textColor || '#333333',
+        titleColor: this.properties.titleColor || '#333333',
+        descriptionColor: this.properties.descriptionColor || '#333333',
         height: this.properties.height || 500,
         enableTransitions: this.properties.enableTransitions !== false,
         transitionEffect: this.properties.transitionEffect || 'fade',
@@ -210,10 +212,15 @@ export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<
                   description: 'Hex color code (e.g., #ffffff)',
                   value: this.properties.backgroundColor || '#ffffff'
                 }),
-                PropertyPaneTextField('textColor', {
-                  label: 'Text Color',
+                PropertyPaneTextField('titleColor', {
+                  label: 'Title Color',
                   description: 'Hex color code (e.g., #333333)',
-                  value: this.properties.textColor || '#333333'
+                  value: this.properties.titleColor || '#333333'
+                }),
+                PropertyPaneTextField('descriptionColor', {
+                  label: 'Description Color',
+                  description: 'Hex color code (e.g., #333333)',
+                  value: this.properties.descriptionColor || '#333333'
                 }),
                 PropertyPaneSlider('overlayOpacity', {
                   label: 'Image Overlay Opacity (%)',

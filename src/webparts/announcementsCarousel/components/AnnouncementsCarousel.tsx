@@ -231,11 +231,14 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
           </div>
         )}
 
-        <div className={styles.contentContainer} style={{ color: this.props.textColor }}>
+        <div className={styles.contentContainer}>
           {this.props.showTitle && (
             <h2
               className={styles.announcementTitle}
-              style={{ fontSize: `${this.props.titleFontSize}px` }}
+              style={{
+                fontSize: `${this.props.titleFontSize}px`,
+                color: this.props.titleColor
+              }}
             >
               {announcement.Title}
             </h2>
@@ -244,7 +247,10 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
           {this.props.showDescription && (
             <div
               className={styles.announcementDescription}
-              style={{ fontSize: `${this.props.descriptionFontSize}px` }}
+              style={{
+                fontSize: `${this.props.descriptionFontSize}px`,
+                color: this.props.descriptionColor
+              }}
               dangerouslySetInnerHTML={{ __html: announcement.Description }}
             />
           )}

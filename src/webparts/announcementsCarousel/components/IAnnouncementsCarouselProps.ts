@@ -9,7 +9,8 @@ export interface IAnnouncementsCarouselProps {
   titleFontSize: number;
   descriptionFontSize: number;
   backgroundColor: string;
-  textColor: string;
+  titleColor: string;
+  descriptionColor: string;
   height: number;
   enableTransitions: boolean;
   transitionEffect: 'fade' | 'slide' | 'zoom';
