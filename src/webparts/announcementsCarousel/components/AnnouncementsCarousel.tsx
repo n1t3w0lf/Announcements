@@ -36,9 +36,11 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
   }
 
   public async componentDidMount(): Promise<void> {
-    await this.ensureListExists();
-    await this.loadAnnouncements();
-    this.startRotation();
+    const listReady = await this.ensureListExists();
+    if (listReady) {
+      await this.loadAnnouncements();
+      this.startRotation();
+    }
   }
 
   public componentWillUnmount(): void {
@@ -54,17 +56,20 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
     }
   }
 
-  private async ensureListExists(): Promise<void> {
+  private async ensureListExists(): Promise<boolean> {
     try {
       this.setState({ isProvisioning: true });
       await ListProvisioningService.ensureList(this.props.context);
       this.setState({ isProvisioning: false });
+      return true;
     } catch (error) {
+      console.error('Failed to provision list:', error);
       this.setState({
-        error: 'Failed to provision announcements list. Please check your permissions.',
+        error: `Failed to provision announcements list: ${error.message || 'Unknown error'}. Please check your permissions.`,
         isProvisioning: false,
         loading: false
       });
+      return false;
     }
   }
 
@@ -88,8 +93,9 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
       }
     } catch (error) {
       console.error('Error loading announcements:', error);
+      const errorMessage = error.message || 'Unknown error';
       this.setState({
-        error: 'Failed to load announcements. Please try again later.',
+        error: `Failed to load announcements: ${errorMessage}. The list may still be provisioning. Try refreshing the page in a few seconds.`,
         loading: false
       });
     }

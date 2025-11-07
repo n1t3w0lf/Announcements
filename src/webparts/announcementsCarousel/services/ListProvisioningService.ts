@@ -13,9 +13,23 @@ export class ListProvisioningService {
       if (!listExists) {
         console.log('List does not exist. Creating...');
         await this.createList(context);
+        console.log('List created. Creating columns...');
         await this.createColumns(context);
+        console.log('Columns created. Configuring list settings...');
         await this.configureListSettings(context);
-        console.log('List created successfully');
+        console.log('List created successfully. Waiting for SharePoint to fully provision...');
+
+        // Wait for SharePoint to fully provision the list
+        await this.delay(3000);
+
+        // Verify the list is accessible
+        const listNowExists = await this.checkListExists(context);
+        if (!listNowExists) {
+          console.warn('List was created but is not yet accessible. Waiting longer...');
+          await this.delay(2000);
+        }
+
+        console.log('List is ready');
         return true;
       } else {
         console.log('List already exists');
@@ -27,6 +41,10 @@ export class ListProvisioningService {
       console.error('Error provisioning list:', error);
       throw error;
     }
+  }
+
+  private static delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   private static async checkListExists(context: WebPartContext): Promise<boolean> {
