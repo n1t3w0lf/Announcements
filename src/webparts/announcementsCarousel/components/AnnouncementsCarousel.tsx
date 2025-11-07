@@ -353,7 +353,7 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
       return (
         <div className={styles.announcementsCarousel}>
           <MessageBar messageBarType={MessageBarType.info}>
-            No active announcements to display. Add announcements to the "{this.props.listName}" list to get started.
+            No active announcements to display. Add announcements to the &quot;{this.props.listName}&quot; list to get started.
           </MessageBar>
         </div>
       );

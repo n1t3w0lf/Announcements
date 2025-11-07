@@ -6,8 +6,7 @@ import {
   PropertyPaneTextField,
   PropertyPaneSlider,
   PropertyPaneToggle,
-  PropertyPaneDropdown,
-  PropertyPaneChoiceGroup
+  PropertyPaneDropdown
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 

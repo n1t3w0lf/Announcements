@@ -1,6 +1,6 @@
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
-import { IAnnouncement, IAnnouncementListItem, CelebrationType, IconPosition } from '../models/IAnnouncement';
+import { IAnnouncement, CelebrationType, IconPosition } from '../models/IAnnouncement';
 
 export class AnnouncementDataService {
   private context: WebPartContext;
