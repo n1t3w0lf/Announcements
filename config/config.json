@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "announcements-carousel-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/announcementsCarousel/AnnouncementsCarouselWebPart.js",
+          "manifest": "./src/webparts/announcementsCarousel/AnnouncementsCarouselWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "AnnouncementsCarouselWebPartStrings": "lib/webparts/announcementsCarousel/loc/{locale}.js"
+  }
+}

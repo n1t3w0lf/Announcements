@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "announcements-carousel-webpart-client-side-solution",
+    "id": "f1e2d3c4-b5a6-4c7d-8e9f-0a1b2c3d4e5f",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "Your Organization",
+      "websiteUrl": "https://www.yourcompany.com",
+      "privacyUrl": "https://www.yourcompany.com/privacy",
+      "termsOfUseUrl": "https://www.yourcompany.com/terms",
+      "mpnId": "Undefined-1.18.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "Beautiful announcements carousel with celebration icons"
+      },
+      "longDescription": {
+        "default": "A comprehensive announcements web part with automatic list provisioning, celebration icons, carousel rotation, and extensive customization options."
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "Announcements Carousel Feature",
+        "description": "Adds announcements carousel web part with auto-provisioning",
+        "id": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/announcements-carousel-webpart.sppkg"
+  }
+}
