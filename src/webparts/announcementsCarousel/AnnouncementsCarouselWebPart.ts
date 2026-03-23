@@ -21,20 +21,11 @@ export interface IAnnouncementsCarouselWebPartProps {
   showDescription: boolean;
   titleFontSize: number;
   descriptionFontSize: number;
-  backgroundColor: string;
-  titleColor: string;
-  descriptionColor: string;
-  height: number;
   enableTransitions: boolean;
   transitionEffect: 'fade' | 'slide' | 'zoom';
   showNavigationDots: boolean;
   showNavigationArrows: boolean;
   autoPlay: boolean;
-  celebrationIconSize: number;
-  showCelebrationIcon: boolean;
-  borderRadius: number;
-  showShadow: boolean;
-  overlayOpacity: number;
 }
 
 export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<IAnnouncementsCarouselWebPartProps> {
@@ -42,12 +33,10 @@ export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<
   protected async onInit(): Promise<void> {
     await super.onInit();
 
-    // Set default values if not set
     if (!this.properties.listName) {
       this.properties.listName = ListProvisioningService.getListName();
     }
 
-    // Ensure list exists on first load
     try {
       await ListProvisioningService.ensureList(this.context);
     } catch (error) {
@@ -66,20 +55,11 @@ export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<
         showDescription: this.properties.showDescription !== false,
         titleFontSize: this.properties.titleFontSize || 32,
         descriptionFontSize: this.properties.descriptionFontSize || 16,
-        backgroundColor: this.properties.backgroundColor || '#ffffff',
-        titleColor: this.properties.titleColor || '#333333',
-        descriptionColor: this.properties.descriptionColor || '#333333',
-        height: this.properties.height || 500,
         enableTransitions: this.properties.enableTransitions !== false,
         transitionEffect: this.properties.transitionEffect || 'fade',
         showNavigationDots: this.properties.showNavigationDots !== false,
         showNavigationArrows: this.properties.showNavigationArrows !== false,
-        autoPlay: this.properties.autoPlay !== false,
-        celebrationIconSize: this.properties.celebrationIconSize || 60,
-        showCelebrationIcon: this.properties.showCelebrationIcon !== false,
-        borderRadius: this.properties.borderRadius || 8,
-        showShadow: this.properties.showShadow !== false,
-        overlayOpacity: this.properties.overlayOpacity || 30
+        autoPlay: this.properties.autoPlay !== false
       }
     );
 
@@ -162,14 +142,7 @@ export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<
                   checked: this.properties.showNavigationArrows !== false
                 })
               ]
-            }
-          ]
-        },
-        {
-          header: {
-            description: 'Customize the appearance of your announcements'
-          },
-          groups: [
+            },
             {
               groupName: 'Content Display',
               groupFields: [
@@ -200,87 +173,6 @@ export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<
                   value: this.properties.descriptionFontSize || 16,
                   showValue: true,
                   step: 1
-                })
-              ]
-            },
-            {
-              groupName: 'Colors & Styling',
-              groupFields: [
-                PropertyPaneTextField('backgroundColor', {
-                  label: 'Background Color',
-                  description: 'Hex color code (e.g., #ffffff)',
-                  value: this.properties.backgroundColor || '#ffffff'
-                }),
-                PropertyPaneTextField('titleColor', {
-                  label: 'Title Color',
-                  description: 'Hex color code (e.g., #333333)',
-                  value: this.properties.titleColor || '#333333'
-                }),
-                PropertyPaneTextField('descriptionColor', {
-                  label: 'Description Color',
-                  description: 'Hex color code (e.g., #333333)',
-                  value: this.properties.descriptionColor || '#333333'
-                }),
-                PropertyPaneSlider('overlayOpacity', {
-                  label: 'Image Overlay Opacity (%)',
-                  min: 0,
-                  max: 100,
-                  value: this.properties.overlayOpacity || 30,
-                  showValue: true,
-                  step: 5
-                })
-              ]
-            },
-            {
-              groupName: 'Dimensions & Effects',
-              groupFields: [
-                PropertyPaneSlider('height', {
-                  label: 'Carousel Height (px)',
-                  min: 300,
-                  max: 800,
-                  value: this.properties.height || 500,
-                  showValue: true,
-                  step: 50
-                }),
-                PropertyPaneSlider('borderRadius', {
-                  label: 'Border Radius (px)',
-                  min: 0,
-                  max: 50,
-                  value: this.properties.borderRadius || 8,
-                  showValue: true,
-                  step: 2
-                }),
-                PropertyPaneToggle('showShadow', {
-                  label: 'Show Shadow',
-                  onText: 'On',
-                  offText: 'Off',
-                  checked: this.properties.showShadow !== false
-                })
-              ]
-            }
-          ]
-        },
-        {
-          header: {
-            description: 'Configure celebration icon settings'
-          },
-          groups: [
-            {
-              groupName: 'Celebration Icons',
-              groupFields: [
-                PropertyPaneToggle('showCelebrationIcon', {
-                  label: 'Show Celebration Icons',
-                  onText: 'On',
-                  offText: 'Off',
-                  checked: this.properties.showCelebrationIcon !== false
-                }),
-                PropertyPaneSlider('celebrationIconSize', {
-                  label: 'Icon Size (px)',
-                  min: 30,
-                  max: 120,
-                  value: this.properties.celebrationIconSize || 60,
-                  showValue: true,
-                  step: 10
                 })
               ]
             }

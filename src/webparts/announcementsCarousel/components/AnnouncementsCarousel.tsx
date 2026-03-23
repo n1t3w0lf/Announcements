@@ -4,7 +4,9 @@ import { IAnnouncement, CelebrationType } from '../models/IAnnouncement';
 import { AnnouncementDataService } from '../services/AnnouncementDataService';
 import { CelebrationIconService } from '../services/CelebrationIconService';
 import { ListProvisioningService } from '../services/ListProvisioningService';
-import { Spinner, SpinnerSize, MessageBar, MessageBarType, IconButton } from '@fluentui/react';
+import { PermissionService } from '../services/PermissionService';
+import AnnouncementManagePanel from './AnnouncementManagePanel';
+import { Spinner, SpinnerSize, MessageBar, MessageBarType, IconButton, DefaultButton } from '@fluentui/react';
 import styles from './AnnouncementsCarousel.module.scss';
 
 export interface IAnnouncementsCarouselState {
@@ -14,6 +16,8 @@ export interface IAnnouncementsCarouselState {
   error: string | null;
   isProvisioning: boolean;
   isPaused: boolean;
+  isOwner: boolean;
+  isManagePanelOpen: boolean;
 }
 
 export default class AnnouncementsCarousel extends React.Component<IAnnouncementsCarouselProps, IAnnouncementsCarouselState> {
@@ -29,7 +33,9 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
       loading: true,
       error: null,
       isProvisioning: false,
-      isPaused: false
+      isPaused: false,
+      isOwner: false,
+      isManagePanelOpen: false
     };
 
     this.dataService = new AnnouncementDataService(props.context, props.listName);
@@ -41,6 +47,9 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
       await this.loadAnnouncements();
       this.startRotation();
     }
+
+    const currentUserIsOwner = await PermissionService.checkIsOwner(this.props.context);
+    this.setState({ isOwner: currentUserIsOwner });
   }
 
   public componentWillUnmount(): void {
@@ -134,23 +143,27 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
     this.setState({ currentIndex: index });
   };
 
-  private togglePause = (): void => {
-    const newPausedState = !this.state.isPaused;
-    this.setState({ isPaused: newPausedState });
+  private handleOpenManagePanel = (): void => {
+    this.setState({ isManagePanelOpen: true });
+  };
 
-    if (newPausedState) {
-      this.stopRotation();
-    } else {
-      this.startRotation();
+  private handleManagePanelDismiss = (dataChanged: boolean): void => {
+    this.setState({ isManagePanelOpen: false });
+    if (dataChanged) {
+      this.loadAnnouncements().catch(
+        (reloadError) => console.error('Error reloading announcements after panel close:', reloadError)
+      );
     }
   };
 
   private renderCelebrationIcon(announcement: IAnnouncement): JSX.Element | null {
-    if (!this.props.showCelebrationIcon || announcement.CelebrationIcon === CelebrationType.None) {
+    const showIcon = announcement.ShowCelebrationIcon != null ? announcement.ShowCelebrationIcon : true;
+    if (!showIcon || announcement.CelebrationIcon === CelebrationType.None) {
       return null;
     }
 
-    // Check if it's a custom icon with a URL
+    const iconSize = announcement.CelebrationIconSize || 60;
+
     if (announcement.CelebrationIcon === CelebrationType.Custom && announcement.CustomIconUrl) {
       const positionClass = `${styles.celebrationIcon} ${styles[announcement.CelebrationIconPosition || 'topRight']}`;
 
@@ -158,8 +171,8 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
         <div
           className={positionClass}
           style={{
-            width: `${this.props.celebrationIconSize + 20}px`,
-            height: `${this.props.celebrationIconSize + 20}px`,
+            width: `${iconSize + 20}px`,
+            height: `${iconSize + 20}px`,
             overflow: 'hidden'
           }}
           title="Custom Icon"
@@ -192,9 +205,9 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
         style={{
           backgroundColor: iconConfig.backgroundColor,
           color: iconConfig.color,
-          fontSize: `${this.props.celebrationIconSize}px`,
-          width: `${this.props.celebrationIconSize + 20}px`,
-          height: `${this.props.celebrationIconSize + 20}px`
+          fontSize: `${iconSize}px`,
+          width: `${iconSize + 20}px`,
+          height: `${iconSize + 20}px`
         }}
         title={iconConfig.label}
       >
@@ -206,26 +219,71 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
   private renderAnnouncement(announcement: IAnnouncement): JSX.Element {
     const transitionClass = this.props.enableTransitions ? styles[this.props.transitionEffect] : '';
 
-    return (
-      <div
-        className={`${styles.announcementSlide} ${transitionClass}`}
-        style={{
-          height: `${this.props.height}px`,
-          backgroundColor: this.props.backgroundColor,
-          borderRadius: `${this.props.borderRadius}px`,
-          boxShadow: this.props.showShadow ? '0 4px 20px rgba(0,0,0,0.15)' : 'none'
-        }}
-      >
+    // All visual properties come from the announcement itself (with defaults from data service mapping)
+    const sizeMode = announcement.ImageSizeMode || 'fit';
+    const imageHeight = announcement.ImageHeight || 400;
+    const imageWidth = announcement.ImageWidth != null ? announcement.ImageWidth : 0;
+    const imageFit = announcement.ImageFit || 'cover';
+    const bgType = announcement.ImageBackgroundType || 'gradient';
+    const solidBgColor = announcement.ImageBackgroundColor || '#667eea';
+    const gradientStart = announcement.GradientStartColor || '#667eea';
+    const gradientEnd = announcement.GradientEndColor || '#764ba2';
+    const gradientDir = announcement.GradientDirection != null ? announcement.GradientDirection : 135;
+    const overlayColor = announcement.OverlayGradientColor || '#000000';
+    const overlayOpacity = announcement.OverlayOpacity != null ? announcement.OverlayOpacity : 30;
+    const cardHeight = announcement.CardHeight || 500;
+    const bgColor = announcement.BackgroundColor || '#ffffff';
+    const borderRadius = announcement.BorderRadius != null ? announcement.BorderRadius : 8;
+    const showShadow = announcement.ShowShadow != null ? announcement.ShowShadow : true;
+    const titleColor = announcement.TitleColor || '#333333';
+    const descColor = announcement.DescriptionColor || '#333333';
+
+    // Image container background: solid or gradient
+    const containerBackground = bgType === 'solid'
+      ? solidBgColor
+      : `linear-gradient(${gradientDir}deg, ${gradientStart} 0%, ${gradientEnd} 100%)`;
+    const overlayGradient = `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, ${overlayColor} 100%)`;
+
+    // Image container style
+    const imageContainerStyle: React.CSSProperties = {
+      background: containerBackground
+    };
+
+    // Image style: CSS fit mode vs manual dimensions
+    const imageStyle: React.CSSProperties = {};
+
+    if (sizeMode === 'manual') {
+      // Manual mode: explicit pixel dimensions
+      imageContainerStyle.height = `${imageHeight}px`;
+      if (imageWidth > 0) {
+        imageStyle.width = `${imageWidth}px`;
+        imageStyle.height = '100%';
+      }
+    } else {
+      // Fit mode: CSS object-fit handles sizing
+      imageContainerStyle.height = `${imageHeight}px`;
+      imageStyle.objectFit = imageFit as any;
+    }
+
+    const hasRedirect = !!announcement.RedirectUrl;
+    const redirectTarget = announcement.RedirectTarget || '_self';
+
+    const slideContent = (
+      <>
         {announcement.AnnouncementImage && (
-          <div className={styles.imageContainer}>
+          <div
+            className={styles.imageContainer}
+            style={imageContainerStyle}
+          >
             <img
               src={announcement.AnnouncementImage}
               alt={announcement.Title}
               className={styles.announcementImage}
+              style={imageStyle}
             />
             <div
               className={styles.imageOverlay}
-              style={{ opacity: this.props.overlayOpacity / 100 }}
+              style={{ opacity: overlayOpacity / 100, background: overlayGradient }}
             />
             {this.renderCelebrationIcon(announcement)}
           </div>
@@ -237,7 +295,7 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
               className={styles.announcementTitle}
               style={{
                 fontSize: `${this.props.titleFontSize}px`,
-                color: this.props.titleColor
+                color: titleColor
               }}
             >
               {announcement.Title}
@@ -249,12 +307,42 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
               className={styles.announcementDescription}
               style={{
                 fontSize: `${this.props.descriptionFontSize}px`,
-                color: this.props.descriptionColor
+                color: descColor
               }}
               dangerouslySetInnerHTML={{ __html: announcement.Description }}
             />
           )}
         </div>
+      </>
+    );
+
+    const slideStyle: React.CSSProperties = {
+      height: `${cardHeight}px`,
+      backgroundColor: bgColor,
+      borderRadius: `${borderRadius}px`,
+      boxShadow: showShadow ? '0 4px 20px rgba(0,0,0,0.15)' : 'none'
+    };
+
+    if (hasRedirect) {
+      return (
+        <a
+          href={announcement.RedirectUrl}
+          target={redirectTarget}
+          rel={redirectTarget === '_blank' ? 'noopener noreferrer' : undefined}
+          className={`${styles.announcementSlide} ${styles.clickableSlide} ${transitionClass}`}
+          style={{ ...slideStyle, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}
+        >
+          {slideContent}
+        </a>
+      );
+    }
+
+    return (
+      <div
+        className={`${styles.announcementSlide} ${transitionClass}`}
+        style={slideStyle}
+      >
+        {slideContent}
       </div>
     );
   }
@@ -301,18 +389,25 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
     );
   }
 
-  private renderPlayPauseButton(): JSX.Element | null {
-    if (!this.props.autoPlay || this.state.announcements.length <= 1) {
-      return null;
-    }
+  private renderManageButton(): JSX.Element | null {
+    if (!this.state.isOwner) return null;
 
     return (
-      <IconButton
-        className={styles.playPauseButton}
-        iconProps={{ iconName: this.state.isPaused ? 'Play' : 'Pause' }}
-        onClick={this.togglePause}
-        aria-label={this.state.isPaused ? 'Play carousel' : 'Pause carousel'}
-      />
+      <div className={styles.manageButtonContainer}>
+        <DefaultButton
+          text="Manage Announcements"
+          iconProps={{ iconName: 'Settings' }}
+          onClick={this.handleOpenManagePanel}
+          className={styles.manageButton}
+          ariaLabel="Open announcements management panel"
+        />
+        <AnnouncementManagePanel
+          isOpen={this.state.isManagePanelOpen}
+          context={this.props.context}
+          dataService={this.dataService}
+          onDismiss={this.handleManagePanelDismiss}
+        />
+      </div>
     );
   }
 
@@ -342,6 +437,7 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
     if (error) {
       return (
         <div className={styles.announcementsCarousel}>
+          {this.renderManageButton()}
           <MessageBar messageBarType={MessageBarType.error}>
             {error}
           </MessageBar>
@@ -352,6 +448,7 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
     if (announcements.length === 0) {
       return (
         <div className={styles.announcementsCarousel}>
+          {this.renderManageButton()}
           <MessageBar messageBarType={MessageBarType.info}>
             No active announcements to display. Add announcements to the &quot;{this.props.listName}&quot; list to get started.
           </MessageBar>
@@ -363,6 +460,7 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
 
     return (
       <div className={styles.announcementsCarousel}>
+        {this.renderManageButton()}
         <div className={styles.carouselContainer}>
           {this.renderAnnouncement(currentAnnouncement)}
           {this.renderNavigationArrows()}
