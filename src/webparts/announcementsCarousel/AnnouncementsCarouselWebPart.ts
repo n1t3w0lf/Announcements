@@ -26,6 +26,16 @@ export interface IAnnouncementsCarouselWebPartProps {
   showNavigationDots: boolean;
   showNavigationArrows: boolean;
   autoPlay: boolean;
+  emptyStateMessage: string;
+  emptyStateIcon: string;
+  emptyStateIconColor: string;
+  emptyStateBackgroundType: 'solid' | 'gradient' | 'image';
+  emptyStateBackgroundColor: string;
+  emptyStateGradientStart: string;
+  emptyStateGradientEnd: string;
+  emptyStateGradientDirection: number;
+  emptyStateBackgroundImage: string;
+  emptyStateTextColor: string;
 }
 
 export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<IAnnouncementsCarouselWebPartProps> {
@@ -59,7 +69,17 @@ export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<
         transitionEffect: this.properties.transitionEffect || 'fade',
         showNavigationDots: this.properties.showNavigationDots !== false,
         showNavigationArrows: this.properties.showNavigationArrows !== false,
-        autoPlay: this.properties.autoPlay !== false
+        autoPlay: this.properties.autoPlay !== false,
+        emptyStateMessage: this.properties.emptyStateMessage || 'No announcements to display',
+        emptyStateIcon: this.properties.emptyStateIcon || 'Megaphone',
+        emptyStateIconColor: this.properties.emptyStateIconColor || '#0078d4',
+        emptyStateBackgroundType: this.properties.emptyStateBackgroundType || 'gradient',
+        emptyStateBackgroundColor: this.properties.emptyStateBackgroundColor || '#f5f7fa',
+        emptyStateGradientStart: this.properties.emptyStateGradientStart || '#f5f7fa',
+        emptyStateGradientEnd: this.properties.emptyStateGradientEnd || '#e4e8ee',
+        emptyStateGradientDirection: this.properties.emptyStateGradientDirection != null ? this.properties.emptyStateGradientDirection : 135,
+        emptyStateBackgroundImage: this.properties.emptyStateBackgroundImage || '',
+        emptyStateTextColor: this.properties.emptyStateTextColor || '#444444'
       }
     );
 
@@ -174,6 +194,74 @@ export default class AnnouncementsCarouselWebPart extends BaseClientSideWebPart<
                   showValue: true,
                   step: 1
                 })
+              ]
+            },
+            {
+              groupName: 'Empty State',
+              groupFields: [
+                PropertyPaneTextField('emptyStateMessage', {
+                  label: 'Empty State Message',
+                  description: 'Message shown when there are no active announcements',
+                  value: this.properties.emptyStateMessage || 'No announcements to display'
+                }),
+                PropertyPaneTextField('emptyStateIcon', {
+                  label: 'Empty State Icon',
+                  description: 'Fluent UI icon name (e.g., Megaphone, Info, Warning)',
+                  value: this.properties.emptyStateIcon || 'Megaphone'
+                }),
+                PropertyPaneTextField('emptyStateIconColor', {
+                  label: 'Icon Color',
+                  description: 'Hex color code (e.g., #0078d4)',
+                  value: this.properties.emptyStateIconColor || '#0078d4'
+                }),
+                PropertyPaneTextField('emptyStateTextColor', {
+                  label: 'Text Color',
+                  description: 'Hex color code for the message text',
+                  value: this.properties.emptyStateTextColor || '#444444'
+                }),
+                PropertyPaneDropdown('emptyStateBackgroundType', {
+                  label: 'Background Type',
+                  options: [
+                    { key: 'solid', text: 'Solid Color' },
+                    { key: 'gradient', text: 'Gradient' },
+                    { key: 'image', text: 'Image' }
+                  ],
+                  selectedKey: this.properties.emptyStateBackgroundType || 'gradient'
+                }),
+                ...(this.properties.emptyStateBackgroundType === 'solid' ? [
+                  PropertyPaneTextField('emptyStateBackgroundColor', {
+                    label: 'Background Color',
+                    description: 'Hex color code (e.g., #f5f7fa)',
+                    value: this.properties.emptyStateBackgroundColor || '#f5f7fa'
+                  })
+                ] : []),
+                ...(this.properties.emptyStateBackgroundType === 'image' ? [
+                  PropertyPaneTextField('emptyStateBackgroundImage', {
+                    label: 'Background Image URL',
+                    description: 'Full URL to a background image',
+                    value: this.properties.emptyStateBackgroundImage || ''
+                  })
+                ] : []),
+                ...(!this.properties.emptyStateBackgroundType || this.properties.emptyStateBackgroundType === 'gradient' ? [
+                  PropertyPaneTextField('emptyStateGradientStart', {
+                    label: 'Gradient Start Color',
+                    description: 'Hex color code (e.g., #f5f7fa)',
+                    value: this.properties.emptyStateGradientStart || '#f5f7fa'
+                  }),
+                  PropertyPaneTextField('emptyStateGradientEnd', {
+                    label: 'Gradient End Color',
+                    description: 'Hex color code (e.g., #e4e8ee)',
+                    value: this.properties.emptyStateGradientEnd || '#e4e8ee'
+                  }),
+                  PropertyPaneSlider('emptyStateGradientDirection', {
+                    label: 'Gradient Direction (degrees)',
+                    min: 0,
+                    max: 360,
+                    value: this.properties.emptyStateGradientDirection != null ? this.properties.emptyStateGradientDirection : 135,
+                    showValue: true,
+                    step: 5
+                  })
+                ] : [])
               ]
             }
           ]

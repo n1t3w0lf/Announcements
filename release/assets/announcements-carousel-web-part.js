@@ -781,7 +781,17 @@ class AnnouncementsCarouselWebPart extends _microsoft_sp_webpart_base__WEBPACK_I
             transitionEffect: this.properties.transitionEffect || 'fade',
             showNavigationDots: this.properties.showNavigationDots !== false,
             showNavigationArrows: this.properties.showNavigationArrows !== false,
-            autoPlay: this.properties.autoPlay !== false
+            autoPlay: this.properties.autoPlay !== false,
+            emptyStateMessage: this.properties.emptyStateMessage || 'No announcements to display',
+            emptyStateIcon: this.properties.emptyStateIcon || 'Megaphone',
+            emptyStateIconColor: this.properties.emptyStateIconColor || '#0078d4',
+            emptyStateBackgroundType: this.properties.emptyStateBackgroundType || 'gradient',
+            emptyStateBackgroundColor: this.properties.emptyStateBackgroundColor || '#f5f7fa',
+            emptyStateGradientStart: this.properties.emptyStateGradientStart || '#f5f7fa',
+            emptyStateGradientEnd: this.properties.emptyStateGradientEnd || '#e4e8ee',
+            emptyStateGradientDirection: this.properties.emptyStateGradientDirection != null ? this.properties.emptyStateGradientDirection : 135,
+            emptyStateBackgroundImage: this.properties.emptyStateBackgroundImage || '',
+            emptyStateTextColor: this.properties.emptyStateTextColor || '#444444'
         });
         react_dom__WEBPACK_IMPORTED_MODULE_1__["render"](element, this.domElement);
     }
@@ -892,6 +902,74 @@ class AnnouncementsCarouselWebPart extends _microsoft_sp_webpart_base__WEBPACK_I
                                     step: 1
                                 })
                             ]
+                        },
+                        {
+                            groupName: 'Empty State',
+                            groupFields: [
+                                Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneTextField"])('emptyStateMessage', {
+                                    label: 'Empty State Message',
+                                    description: 'Message shown when there are no active announcements',
+                                    value: this.properties.emptyStateMessage || 'No announcements to display'
+                                }),
+                                Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneTextField"])('emptyStateIcon', {
+                                    label: 'Empty State Icon',
+                                    description: 'Fluent UI icon name (e.g., Megaphone, Info, Warning)',
+                                    value: this.properties.emptyStateIcon || 'Megaphone'
+                                }),
+                                Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneTextField"])('emptyStateIconColor', {
+                                    label: 'Icon Color',
+                                    description: 'Hex color code (e.g., #0078d4)',
+                                    value: this.properties.emptyStateIconColor || '#0078d4'
+                                }),
+                                Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneTextField"])('emptyStateTextColor', {
+                                    label: 'Text Color',
+                                    description: 'Hex color code for the message text',
+                                    value: this.properties.emptyStateTextColor || '#444444'
+                                }),
+                                Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneDropdown"])('emptyStateBackgroundType', {
+                                    label: 'Background Type',
+                                    options: [
+                                        { key: 'solid', text: 'Solid Color' },
+                                        { key: 'gradient', text: 'Gradient' },
+                                        { key: 'image', text: 'Image' }
+                                    ],
+                                    selectedKey: this.properties.emptyStateBackgroundType || 'gradient'
+                                }),
+                                ...(this.properties.emptyStateBackgroundType === 'solid' ? [
+                                    Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneTextField"])('emptyStateBackgroundColor', {
+                                        label: 'Background Color',
+                                        description: 'Hex color code (e.g., #f5f7fa)',
+                                        value: this.properties.emptyStateBackgroundColor || '#f5f7fa'
+                                    })
+                                ] : []),
+                                ...(this.properties.emptyStateBackgroundType === 'image' ? [
+                                    Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneTextField"])('emptyStateBackgroundImage', {
+                                        label: 'Background Image URL',
+                                        description: 'Full URL to a background image',
+                                        value: this.properties.emptyStateBackgroundImage || ''
+                                    })
+                                ] : []),
+                                ...(!this.properties.emptyStateBackgroundType || this.properties.emptyStateBackgroundType === 'gradient' ? [
+                                    Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneTextField"])('emptyStateGradientStart', {
+                                        label: 'Gradient Start Color',
+                                        description: 'Hex color code (e.g., #f5f7fa)',
+                                        value: this.properties.emptyStateGradientStart || '#f5f7fa'
+                                    }),
+                                    Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneTextField"])('emptyStateGradientEnd', {
+                                        label: 'Gradient End Color',
+                                        description: 'Hex color code (e.g., #e4e8ee)',
+                                        value: this.properties.emptyStateGradientEnd || '#e4e8ee'
+                                    }),
+                                    Object(_microsoft_sp_property_pane__WEBPACK_IMPORTED_MODULE_3__["PropertyPaneSlider"])('emptyStateGradientDirection', {
+                                        label: 'Gradient Direction (degrees)',
+                                        min: 0,
+                                        max: 360,
+                                        value: this.properties.emptyStateGradientDirection != null ? this.properties.emptyStateGradientDirection : 135,
+                                        showValue: true,
+                                        step: 5
+                                    })
+                                ] : [])
+                            ]
                         }
                     ]
                 }
@@ -992,7 +1070,8 @@ function useConst(initialValue) {
 /* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fluentui/react */ "oR7b");
 /* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @fluentui/react */ "2HwJ");
 /* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @fluentui/react */ "e8ns");
-/* harmony import */ var _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./AnnouncementsCarousel.module.scss */ "nuRc");
+/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @fluentui/react */ "htj1");
+/* harmony import */ var _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./AnnouncementsCarousel.module.scss */ "nuRc");
 
 
 
@@ -1127,7 +1206,7 @@ class AnnouncementsCarousel extends react__WEBPACK_IMPORTED_MODULE_0__["Componen
         }
         const iconSize = announcement.CelebrationIconSize || 60;
         if (announcement.CelebrationIcon === _models_IAnnouncement__WEBPACK_IMPORTED_MODULE_1__[/* CelebrationType */ "e"].Custom && announcement.CustomIconUrl) {
-            const positionClass = `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].celebrationIcon} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"][announcement.CelebrationIconPosition || 'topRight']}`;
+            const positionClass = `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].celebrationIcon} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"][announcement.CelebrationIconPosition || 'topRight']}`;
             return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: positionClass, style: {
                     width: `${iconSize + 20}px`,
                     height: `${iconSize + 20}px`,
@@ -1144,8 +1223,8 @@ class AnnouncementsCarousel extends react__WEBPACK_IMPORTED_MODULE_0__["Componen
         if (!iconConfig) {
             return null;
         }
-        const positionClass = `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].celebrationIcon} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"][announcement.CelebrationIconPosition || 'topRight']}`;
-        const animationClass = iconConfig.animation ? _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"][iconConfig.animation] : '';
+        const positionClass = `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].celebrationIcon} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"][announcement.CelebrationIconPosition || 'topRight']}`;
+        const animationClass = iconConfig.animation ? _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"][iconConfig.animation] : '';
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: `${positionClass} ${animationClass}`, style: {
                 backgroundColor: iconConfig.backgroundColor,
                 color: iconConfig.color,
@@ -1153,10 +1232,10 @@ class AnnouncementsCarousel extends react__WEBPACK_IMPORTED_MODULE_0__["Componen
                 width: `${iconSize + 20}px`,
                 height: `${iconSize + 20}px`
             }, title: iconConfig.label },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].celebrationEmoji }, iconConfig.emoji)));
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].celebrationEmoji }, iconConfig.emoji)));
     }
     renderAnnouncement(announcement) {
-        const transitionClass = this.props.enableTransitions ? _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"][this.props.transitionEffect] : '';
+        const transitionClass = this.props.enableTransitions ? _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"][this.props.transitionEffect] : '';
         // All visual properties come from the announcement itself (with defaults from data service mapping)
         const sizeMode = announcement.ImageSizeMode || 'fit';
         const imageHeight = announcement.ImageHeight || 400;
@@ -1202,16 +1281,16 @@ class AnnouncementsCarousel extends react__WEBPACK_IMPORTED_MODULE_0__["Componen
         const hasRedirect = !!announcement.RedirectUrl;
         const redirectTarget = announcement.RedirectTarget || '_self';
         const slideContent = (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-            announcement.AnnouncementImage && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].imageContainer, style: imageContainerStyle },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: announcement.AnnouncementImage, alt: announcement.Title, className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementImage, style: imageStyle }),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].imageOverlay, style: { opacity: overlayOpacity / 100, background: overlayGradient } }),
+            announcement.AnnouncementImage && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].imageContainer, style: imageContainerStyle },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: announcement.AnnouncementImage, alt: announcement.Title, className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementImage, style: imageStyle }),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].imageOverlay, style: { opacity: overlayOpacity / 100, background: overlayGradient } }),
                 this.renderCelebrationIcon(announcement))),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].contentContainer },
-                this.props.showTitle && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementTitle, style: {
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].contentContainer },
+                this.props.showTitle && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementTitle, style: {
                         fontSize: `${this.props.titleFontSize}px`,
                         color: titleColor
                     } }, announcement.Title)),
-                this.props.showDescription && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementDescription, style: {
+                this.props.showDescription && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementDescription, style: {
                         fontSize: `${this.props.descriptionFontSize}px`,
                         color: descColor
                     }, dangerouslySetInnerHTML: { __html: announcement.Description } })))));
@@ -1222,60 +1301,79 @@ class AnnouncementsCarousel extends react__WEBPACK_IMPORTED_MODULE_0__["Componen
             boxShadow: showShadow ? '0 4px 20px rgba(0,0,0,0.15)' : 'none'
         };
         if (hasRedirect) {
-            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { href: announcement.RedirectUrl, target: redirectTarget, rel: redirectTarget === '_blank' ? 'noopener noreferrer' : undefined, className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementSlide} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].clickableSlide} ${transitionClass}`, style: { ...slideStyle, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' } }, slideContent));
+            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { href: announcement.RedirectUrl, target: redirectTarget, rel: redirectTarget === '_blank' ? 'noopener noreferrer' : undefined, className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementSlide} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].clickableSlide} ${transitionClass}`, style: { ...slideStyle, textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' } }, slideContent));
         }
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementSlide} ${transitionClass}`, style: slideStyle }, slideContent));
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementSlide} ${transitionClass}`, style: slideStyle }, slideContent));
     }
     renderNavigationDots() {
         if (!this.props.showNavigationDots || this.state.announcements.length <= 1) {
             return null;
         }
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].navigationDots }, this.state.announcements.map((_, index) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { key: index, className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].dot} ${index === this.state.currentIndex ? _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].activeDot : ''}`, onClick: () => this.goToSlide(index), "aria-label": `Go to slide ${index + 1}` })))));
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].navigationDots }, this.state.announcements.map((_, index) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { key: index, className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].dot} ${index === this.state.currentIndex ? _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].activeDot : ''}`, onClick: () => this.goToSlide(index), "aria-label": `Go to slide ${index + 1}` })))));
     }
     renderNavigationArrows() {
         if (!this.props.showNavigationArrows || this.state.announcements.length <= 1) {
             return null;
         }
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_7__[/* IconButton */ "e"], { className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].navButton} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].prevButton}`, iconProps: { iconName: 'ChevronLeft' }, onClick: this.goToPrevious, "aria-label": "Previous announcement" }),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_7__[/* IconButton */ "e"], { className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].navButton} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].nextButton}`, iconProps: { iconName: 'ChevronRight' }, onClick: this.goToNext, "aria-label": "Next announcement" })));
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_7__[/* IconButton */ "e"], { className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].navButton} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].prevButton}`, iconProps: { iconName: 'ChevronLeft' }, onClick: this.goToPrevious, "aria-label": "Previous announcement" }),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_7__[/* IconButton */ "e"], { className: `${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].navButton} ${_AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].nextButton}`, iconProps: { iconName: 'ChevronRight' }, onClick: this.goToNext, "aria-label": "Next announcement" })));
     }
     renderManageButton() {
         if (!this.state.isOwner)
             return null;
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].manageButtonContainer },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_8__[/* DefaultButton */ "e"], { text: "Manage Announcements", iconProps: { iconName: 'Settings' }, onClick: this.handleOpenManagePanel, className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].manageButton, ariaLabel: "Open announcements management panel" }),
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].manageButtonContainer },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_8__[/* DefaultButton */ "e"], { text: "Manage Announcements", iconProps: { iconName: 'Settings' }, onClick: this.handleOpenManagePanel, className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].manageButton, ariaLabel: "Open announcements management panel" }),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_AnnouncementManagePanel__WEBPACK_IMPORTED_MODULE_6__[/* default */ "e"], { isOpen: this.state.isManagePanelOpen, context: this.props.context, dataService: this.dataService, onDismiss: this.handleManagePanelDismiss })));
     }
     render() {
         const { loading, error, announcements, currentIndex, isProvisioning } = this.state;
         if (isProvisioning) {
-            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementsCarousel },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].centerContent },
+            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementsCarousel },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].centerContent },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_9__[/* Spinner */ "e"], { size: _fluentui_react__WEBPACK_IMPORTED_MODULE_10__[/* SpinnerSize */ "e"].large, label: "Setting up announcements list..." }))));
         }
         if (loading) {
-            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementsCarousel },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].centerContent },
+            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementsCarousel },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].centerContent },
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_9__[/* Spinner */ "e"], { size: _fluentui_react__WEBPACK_IMPORTED_MODULE_10__[/* SpinnerSize */ "e"].large, label: "Loading announcements..." }))));
         }
         if (error) {
-            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementsCarousel },
+            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementsCarousel },
                 this.renderManageButton(),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_11__[/* MessageBar */ "e"], { messageBarType: _fluentui_react__WEBPACK_IMPORTED_MODULE_12__[/* MessageBarType */ "e"].error }, error)));
         }
         if (announcements.length === 0) {
-            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementsCarousel },
+            const bgType = this.props.emptyStateBackgroundType || 'gradient';
+            const emptyStateStyle = {};
+            if (bgType === 'solid') {
+                emptyStateStyle.background = this.props.emptyStateBackgroundColor || '#f5f7fa';
+            }
+            else if (bgType === 'image') {
+                const imgUrl = this.props.emptyStateBackgroundImage;
+                if (imgUrl) {
+                    emptyStateStyle.backgroundImage = `url('${imgUrl}')`;
+                    emptyStateStyle.backgroundSize = 'cover';
+                    emptyStateStyle.backgroundPosition = 'center';
+                }
+            }
+            else {
+                const start = this.props.emptyStateGradientStart || '#f5f7fa';
+                const end = this.props.emptyStateGradientEnd || '#e4e8ee';
+                const dir = this.props.emptyStateGradientDirection != null ? this.props.emptyStateGradientDirection : 135;
+                emptyStateStyle.background = `linear-gradient(${dir}deg, ${start} 0%, ${end} 100%)`;
+            }
+            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementsCarousel },
                 this.renderManageButton(),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_11__[/* MessageBar */ "e"], { messageBarType: _fluentui_react__WEBPACK_IMPORTED_MODULE_12__[/* MessageBarType */ "e"].info },
-                    "No active announcements to display. Add announcements to the \"",
-                    this.props.listName,
-                    "\" list to get started.")));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].emptyState, style: emptyStateStyle },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].emptyStateIconWrapper, style: { color: this.props.emptyStateIconColor } },
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_13__[/* Icon */ "e"], { iconName: this.props.emptyStateIcon, className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].emptyStateIcon })),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].emptyStateMessage, style: { color: this.props.emptyStateTextColor || '#444444' } }, this.props.emptyStateMessage))));
         }
         const currentAnnouncement = announcements[currentIndex];
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].announcementsCarousel },
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].announcementsCarousel },
             this.renderManageButton(),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_13__[/* default */ "e"].carouselContainer },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: _AnnouncementsCarousel_module_scss__WEBPACK_IMPORTED_MODULE_14__[/* default */ "e"].carouselContainer },
                 this.renderAnnouncement(currentAnnouncement),
                 this.renderNavigationArrows(),
                 this.renderNavigationDots())));
@@ -20658,7 +20756,7 @@ function mergeThemes(theme, partialTheme) {
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "JPst");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".announcementsCarousel_6d38406c{box-sizing:border-box;padding:20px;width:100%}.announcementsCarousel_6d38406c .manageButtonContainer_6d38406c{-ms-flex-pack:end;display:-ms-flexbox;display:flex;justify-content:flex-end;margin-bottom:12px}.announcementsCarousel_6d38406c .manageButton_6d38406c{border-color:#c8c6c4}.announcementsCarousel_6d38406c .manageButton_6d38406c:hover{border-color:#0078d4}.announcementsCarousel_6d38406c .centerContent_6d38406c{-ms-flex-pack:center;-ms-flex-align:center;align-items:center;display:-ms-flexbox;display:flex;justify-content:center;min-height:300px;padding:40px}.announcementsCarousel_6d38406c .carouselContainer_6d38406c{overflow:hidden;position:relative;width:100%}.announcementsCarousel_6d38406c .announcementSlide_6d38406c{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;overflow:hidden;position:relative;transition:all .3s ease-in-out;width:100%}.announcementsCarousel_6d38406c .announcementSlide_6d38406c.fade_6d38406c{animation:fadeIn_6d38406c .8s ease-in-out}.announcementsCarousel_6d38406c .announcementSlide_6d38406c.slide_6d38406c{animation:slideIn_6d38406c .6s ease-in-out}.announcementsCarousel_6d38406c .announcementSlide_6d38406c.zoom_6d38406c{animation:zoomIn_6d38406c .7s ease-in-out}.announcementsCarousel_6d38406c .announcementSlide_6d38406c.clickableSlide_6d38406c{cursor:pointer}.announcementsCarousel_6d38406c .imageContainer_6d38406c{-ms-flex-align:center;-ms-flex-pack:center;align-items:center;display:-ms-flexbox;display:flex;justify-content:center;overflow:hidden;position:relative;width:100%}.announcementsCarousel_6d38406c .announcementImage_6d38406c{height:100%;width:100%}.announcementsCarousel_6d38406c .imageOverlay_6d38406c{bottom:0;left:0;pointer-events:none;position:absolute;right:0;top:0}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c{-ms-flex-align:center;-ms-flex-pack:center;align-items:center;border-radius:50%;box-shadow:0 4px 15px rgba(0,0,0,.3);display:-ms-flexbox;display:flex;justify-content:center;position:absolute;transition:transform .3s ease;z-index:10}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c:hover{transform:scale(1.1)}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.topLeft_6d38406c{left:20px;top:20px}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.topRight_6d38406c{right:20px;top:20px}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.bottomLeft_6d38406c{bottom:20px;left:20px}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.bottomRight_6d38406c{bottom:20px;right:20px}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.center_6d38406c{left:50%;top:50%;transform:translate(-50%,-50%)}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.center_6d38406c:hover{transform:translate(-50%,-50%) scale(1.1)}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c .celebrationEmoji_6d38406c{font-size:inherit;line-height:1}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.bounce_6d38406c{animation:bounce_6d38406c 2s infinite}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.pulse_6d38406c{animation:pulse_6d38406c 2s infinite}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.wave_6d38406c{animation:wave_6d38406c 2s infinite}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.shine_6d38406c{animation:shine_6d38406c 2s infinite}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.sparkle_6d38406c{animation:sparkle_6d38406c 2s infinite}.announcementsCarousel_6d38406c .contentContainer_6d38406c{background:inherit;-ms-flex:1;flex:1;padding:30px 40px}.announcementsCarousel_6d38406c .announcementTitle_6d38406c{word-wrap:break-word;color:inherit;font-weight:600;line-height:1.3;margin:0 0 15px 0}.announcementsCarousel_6d38406c .announcementDescription_6d38406c{word-wrap:break-word;color:inherit;line-height:1.6;margin:0 0 20px 0}.announcementsCarousel_6d38406c .announcementDescription_6d38406c p{margin:0 0 10px 0}.announcementsCarousel_6d38406c .announcementDescription_6d38406c ol,.announcementsCarousel_6d38406c .announcementDescription_6d38406c ul{margin:10px 0;padding-left:20px}.announcementsCarousel_6d38406c .announcementDescription_6d38406c a{color:inherit;text-decoration:underline}.announcementsCarousel_6d38406c .dateInfo_6d38406c{border-top:1px solid hsla(0,0%,100%,.2);margin-top:15px;padding-top:15px}.announcementsCarousel_6d38406c .dateLabel_6d38406c{font-size:14px;font-style:italic;opacity:.8}.announcementsCarousel_6d38406c .navigationDots_6d38406c{-ms-flex-pack:center;-ms-flex-align:center;align-items:center;display:-ms-flexbox;display:flex;gap:10px;justify-content:center;padding:20px 0 10px}.announcementsCarousel_6d38406c .dot_6d38406c{background:0 0;border:2px solid #666;border-radius:50%;cursor:pointer;height:12px;padding:0;transition:all .3s ease;width:12px}.announcementsCarousel_6d38406c .dot_6d38406c:hover{border-color:#333;transform:scale(1.2)}.announcementsCarousel_6d38406c .dot_6d38406c.activeDot_6d38406c{background:#0078d4;border-color:#0078d4;transform:scale(1.3)}.announcementsCarousel_6d38406c .navButton_6d38406c{background:hsla(0,0%,100%,.9);border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,.2);height:50px;position:absolute;top:50%;transform:translateY(-50%);transition:all .3s ease;width:50px;z-index:20}.announcementsCarousel_6d38406c .navButton_6d38406c:hover{background:#fff;transform:translateY(-50%) scale(1.1)}.announcementsCarousel_6d38406c .navButton_6d38406c .ms-Button-icon{color:#333;font-size:20px}.announcementsCarousel_6d38406c .navButton_6d38406c.prevButton_6d38406c{left:20px}.announcementsCarousel_6d38406c .navButton_6d38406c.nextButton_6d38406c{right:20px}.announcementsCarousel_6d38406c .playPauseButton_6d38406c{background:hsla(0,0%,100%,.9);border-radius:50%;bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.2);height:40px;position:absolute;right:20px;transition:all .3s ease;width:40px;z-index:20}.announcementsCarousel_6d38406c .playPauseButton_6d38406c:hover{background:#fff;transform:scale(1.1)}.announcementsCarousel_6d38406c .playPauseButton_6d38406c .ms-Button-icon{color:#333;font-size:16px}@keyframes fadeIn_6d38406c{0%{opacity:0}to{opacity:1}}@keyframes slideIn_6d38406c{0%{transform:translateX(100%)}to{transform:translateX(0)}}@keyframes zoomIn_6d38406c{0%{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}@keyframes bounce_6d38406c{0%,to{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes pulse_6d38406c{0%,to{transform:scale(1)}50%{transform:scale(1.1)}}@keyframes wave_6d38406c{0%,to{transform:rotate(0)}25%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}@keyframes shine_6d38406c{0%,to{filter:brightness(1)}50%{filter:brightness(1.5)}}@keyframes sparkle_6d38406c{0%,to{opacity:1;transform:scale(1) rotate(0)}50%{opacity:.7;transform:scale(1.2) rotate(180deg)}}@media (max-width:768px){.announcementsCarousel_6d38406c .imageContainer_6d38406c{max-height:250px}.announcementsCarousel_6d38406c .contentContainer_6d38406c{padding:20px}.announcementsCarousel_6d38406c .navButton_6d38406c{height:40px;width:40px}.announcementsCarousel_6d38406c .navButton_6d38406c.prevButton_6d38406c{left:10px}.announcementsCarousel_6d38406c .navButton_6d38406c.nextButton_6d38406c{right:10px}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.topLeft_6d38406c,.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.topRight_6d38406c{top:10px}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.bottomLeft_6d38406c,.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.bottomRight_6d38406c{bottom:10px}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.bottomLeft_6d38406c,.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.topLeft_6d38406c{left:10px}.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.bottomRight_6d38406c,.announcementsCarousel_6d38406c .celebrationIcon_6d38406c.topRight_6d38406c{right:10px}}", ""]);
+exports.push([module.i, ".announcementsCarousel_670d8528{box-sizing:border-box;padding:20px;width:100%}.announcementsCarousel_670d8528 .manageButtonContainer_670d8528{-ms-flex-pack:end;display:-ms-flexbox;display:flex;justify-content:flex-end;margin-bottom:12px}.announcementsCarousel_670d8528 .manageButton_670d8528{border-color:#c8c6c4}.announcementsCarousel_670d8528 .manageButton_670d8528:hover{border-color:#0078d4}.announcementsCarousel_670d8528 .centerContent_670d8528{min-height:300px;padding:40px}.announcementsCarousel_670d8528 .centerContent_670d8528,.announcementsCarousel_670d8528 .emptyState_670d8528{-ms-flex-pack:center;-ms-flex-align:center;align-items:center;display:-ms-flexbox;display:flex;justify-content:center}.announcementsCarousel_670d8528 .emptyState_670d8528{background-repeat:no-repeat;border-radius:12px;-ms-flex-direction:column;flex-direction:column;min-height:280px;padding:60px 40px;text-align:center}.announcementsCarousel_670d8528 .emptyStateIconWrapper_670d8528{-ms-flex-align:center;-ms-flex-pack:center;align-items:center;background:hsla(0,0%,100%,.9);border-radius:50%;box-shadow:0 4px 16px rgba(0,0,0,.08);display:-ms-flexbox;display:flex;height:88px;justify-content:center;margin-bottom:24px;width:88px}.announcementsCarousel_670d8528 .emptyStateIcon_670d8528{font-size:40px}.announcementsCarousel_670d8528 .emptyStateMessage_670d8528{color:#444;font-size:18px;font-weight:500;line-height:1.5;margin:0;max-width:400px}.announcementsCarousel_670d8528 .carouselContainer_670d8528{overflow:hidden;position:relative;width:100%}.announcementsCarousel_670d8528 .announcementSlide_670d8528{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;overflow:hidden;position:relative;transition:all .3s ease-in-out;width:100%}.announcementsCarousel_670d8528 .announcementSlide_670d8528.fade_670d8528{animation:fadeIn_670d8528 .8s ease-in-out}.announcementsCarousel_670d8528 .announcementSlide_670d8528.slide_670d8528{animation:slideIn_670d8528 .6s ease-in-out}.announcementsCarousel_670d8528 .announcementSlide_670d8528.zoom_670d8528{animation:zoomIn_670d8528 .7s ease-in-out}.announcementsCarousel_670d8528 .announcementSlide_670d8528.clickableSlide_670d8528{cursor:pointer}.announcementsCarousel_670d8528 .imageContainer_670d8528{-ms-flex-align:center;-ms-flex-pack:center;align-items:center;display:-ms-flexbox;display:flex;justify-content:center;overflow:hidden;position:relative;width:100%}.announcementsCarousel_670d8528 .announcementImage_670d8528{height:100%;width:100%}.announcementsCarousel_670d8528 .imageOverlay_670d8528{bottom:0;left:0;pointer-events:none;position:absolute;right:0;top:0}.announcementsCarousel_670d8528 .celebrationIcon_670d8528{-ms-flex-align:center;-ms-flex-pack:center;align-items:center;border-radius:50%;box-shadow:0 4px 15px rgba(0,0,0,.3);display:-ms-flexbox;display:flex;justify-content:center;position:absolute;transition:transform .3s ease;z-index:10}.announcementsCarousel_670d8528 .celebrationIcon_670d8528:hover{transform:scale(1.1)}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.topLeft_670d8528{left:20px;top:20px}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.topRight_670d8528{right:20px;top:20px}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.bottomLeft_670d8528{bottom:20px;left:20px}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.bottomRight_670d8528{bottom:20px;right:20px}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.center_670d8528{left:50%;top:50%;transform:translate(-50%,-50%)}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.center_670d8528:hover{transform:translate(-50%,-50%) scale(1.1)}.announcementsCarousel_670d8528 .celebrationIcon_670d8528 .celebrationEmoji_670d8528{font-size:inherit;line-height:1}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.bounce_670d8528{animation:bounce_670d8528 2s infinite}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.pulse_670d8528{animation:pulse_670d8528 2s infinite}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.wave_670d8528{animation:wave_670d8528 2s infinite}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.shine_670d8528{animation:shine_670d8528 2s infinite}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.sparkle_670d8528{animation:sparkle_670d8528 2s infinite}.announcementsCarousel_670d8528 .contentContainer_670d8528{background:inherit;-ms-flex:1;flex:1;padding:30px 40px}.announcementsCarousel_670d8528 .announcementTitle_670d8528{word-wrap:break-word;color:inherit;font-weight:600;line-height:1.3;margin:0 0 15px 0}.announcementsCarousel_670d8528 .announcementDescription_670d8528{word-wrap:break-word;color:inherit;line-height:1.6;margin:0 0 20px 0}.announcementsCarousel_670d8528 .announcementDescription_670d8528 p{margin:0 0 10px 0}.announcementsCarousel_670d8528 .announcementDescription_670d8528 ol,.announcementsCarousel_670d8528 .announcementDescription_670d8528 ul{margin:10px 0;padding-left:20px}.announcementsCarousel_670d8528 .announcementDescription_670d8528 a{color:inherit;text-decoration:underline}.announcementsCarousel_670d8528 .dateInfo_670d8528{border-top:1px solid hsla(0,0%,100%,.2);margin-top:15px;padding-top:15px}.announcementsCarousel_670d8528 .dateLabel_670d8528{font-size:14px;font-style:italic;opacity:.8}.announcementsCarousel_670d8528 .navigationDots_670d8528{-ms-flex-pack:center;-ms-flex-align:center;align-items:center;display:-ms-flexbox;display:flex;gap:10px;justify-content:center;padding:20px 0 10px}.announcementsCarousel_670d8528 .dot_670d8528{background:0 0;border:2px solid #666;border-radius:50%;cursor:pointer;height:12px;padding:0;transition:all .3s ease;width:12px}.announcementsCarousel_670d8528 .dot_670d8528:hover{border-color:#333;transform:scale(1.2)}.announcementsCarousel_670d8528 .dot_670d8528.activeDot_670d8528{background:#0078d4;border-color:#0078d4;transform:scale(1.3)}.announcementsCarousel_670d8528 .navButton_670d8528{background:hsla(0,0%,100%,.9);border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,.2);height:50px;position:absolute;top:50%;transform:translateY(-50%);transition:all .3s ease;width:50px;z-index:20}.announcementsCarousel_670d8528 .navButton_670d8528:hover{background:#fff;transform:translateY(-50%) scale(1.1)}.announcementsCarousel_670d8528 .navButton_670d8528 .ms-Button-icon{color:#333;font-size:20px}.announcementsCarousel_670d8528 .navButton_670d8528.prevButton_670d8528{left:20px}.announcementsCarousel_670d8528 .navButton_670d8528.nextButton_670d8528{right:20px}.announcementsCarousel_670d8528 .playPauseButton_670d8528{background:hsla(0,0%,100%,.9);border-radius:50%;bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.2);height:40px;position:absolute;right:20px;transition:all .3s ease;width:40px;z-index:20}.announcementsCarousel_670d8528 .playPauseButton_670d8528:hover{background:#fff;transform:scale(1.1)}.announcementsCarousel_670d8528 .playPauseButton_670d8528 .ms-Button-icon{color:#333;font-size:16px}@keyframes fadeIn_670d8528{0%{opacity:0}to{opacity:1}}@keyframes slideIn_670d8528{0%{transform:translateX(100%)}to{transform:translateX(0)}}@keyframes zoomIn_670d8528{0%{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}@keyframes bounce_670d8528{0%,to{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes pulse_670d8528{0%,to{transform:scale(1)}50%{transform:scale(1.1)}}@keyframes wave_670d8528{0%,to{transform:rotate(0)}25%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}@keyframes shine_670d8528{0%,to{filter:brightness(1)}50%{filter:brightness(1.5)}}@keyframes sparkle_670d8528{0%,to{opacity:1;transform:scale(1) rotate(0)}50%{opacity:.7;transform:scale(1.2) rotate(180deg)}}@media (max-width:768px){.announcementsCarousel_670d8528 .imageContainer_670d8528{max-height:250px}.announcementsCarousel_670d8528 .contentContainer_670d8528{padding:20px}.announcementsCarousel_670d8528 .navButton_670d8528{height:40px;width:40px}.announcementsCarousel_670d8528 .navButton_670d8528.prevButton_670d8528{left:10px}.announcementsCarousel_670d8528 .navButton_670d8528.nextButton_670d8528{right:10px}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.topLeft_670d8528,.announcementsCarousel_670d8528 .celebrationIcon_670d8528.topRight_670d8528{top:10px}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.bottomLeft_670d8528,.announcementsCarousel_670d8528 .celebrationIcon_670d8528.bottomRight_670d8528{bottom:10px}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.bottomLeft_670d8528,.announcementsCarousel_670d8528 .celebrationIcon_670d8528.topLeft_670d8528{left:10px}.announcementsCarousel_670d8528 .celebrationIcon_670d8528.bottomRight_670d8528,.announcementsCarousel_670d8528 .celebrationIcon_670d8528.topRight_670d8528{right:10px}}", ""]);
 // Exports
 module.exports = exports;
 
@@ -37136,46 +37234,50 @@ function useGroupedDetailsListIndexMap(groups) {
 /* tslint:disable */
 __webpack_require__(/*! ./AnnouncementsCarousel.module.css */ "PKli");
 const styles = {
-    announcementsCarousel: 'announcementsCarousel_6d38406c',
-    manageButtonContainer: 'manageButtonContainer_6d38406c',
-    manageButton: 'manageButton_6d38406c',
-    centerContent: 'centerContent_6d38406c',
-    carouselContainer: 'carouselContainer_6d38406c',
-    announcementSlide: 'announcementSlide_6d38406c',
-    fade: 'fade_6d38406c',
-    fadeIn: 'fadeIn_6d38406c',
-    slide: 'slide_6d38406c',
-    slideIn: 'slideIn_6d38406c',
-    zoom: 'zoom_6d38406c',
-    zoomIn: 'zoomIn_6d38406c',
-    clickableSlide: 'clickableSlide_6d38406c',
-    imageContainer: 'imageContainer_6d38406c',
-    announcementImage: 'announcementImage_6d38406c',
-    imageOverlay: 'imageOverlay_6d38406c',
-    celebrationIcon: 'celebrationIcon_6d38406c',
-    topLeft: 'topLeft_6d38406c',
-    topRight: 'topRight_6d38406c',
-    bottomLeft: 'bottomLeft_6d38406c',
-    bottomRight: 'bottomRight_6d38406c',
-    center: 'center_6d38406c',
-    celebrationEmoji: 'celebrationEmoji_6d38406c',
-    bounce: 'bounce_6d38406c',
-    pulse: 'pulse_6d38406c',
-    wave: 'wave_6d38406c',
-    shine: 'shine_6d38406c',
-    sparkle: 'sparkle_6d38406c',
-    contentContainer: 'contentContainer_6d38406c',
-    announcementTitle: 'announcementTitle_6d38406c',
-    announcementDescription: 'announcementDescription_6d38406c',
-    dateInfo: 'dateInfo_6d38406c',
-    dateLabel: 'dateLabel_6d38406c',
-    navigationDots: 'navigationDots_6d38406c',
-    dot: 'dot_6d38406c',
-    activeDot: 'activeDot_6d38406c',
-    navButton: 'navButton_6d38406c',
-    prevButton: 'prevButton_6d38406c',
-    nextButton: 'nextButton_6d38406c',
-    playPauseButton: 'playPauseButton_6d38406c'
+    announcementsCarousel: 'announcementsCarousel_670d8528',
+    manageButtonContainer: 'manageButtonContainer_670d8528',
+    manageButton: 'manageButton_670d8528',
+    centerContent: 'centerContent_670d8528',
+    emptyState: 'emptyState_670d8528',
+    emptyStateIconWrapper: 'emptyStateIconWrapper_670d8528',
+    emptyStateIcon: 'emptyStateIcon_670d8528',
+    emptyStateMessage: 'emptyStateMessage_670d8528',
+    carouselContainer: 'carouselContainer_670d8528',
+    announcementSlide: 'announcementSlide_670d8528',
+    fade: 'fade_670d8528',
+    fadeIn: 'fadeIn_670d8528',
+    slide: 'slide_670d8528',
+    slideIn: 'slideIn_670d8528',
+    zoom: 'zoom_670d8528',
+    zoomIn: 'zoomIn_670d8528',
+    clickableSlide: 'clickableSlide_670d8528',
+    imageContainer: 'imageContainer_670d8528',
+    announcementImage: 'announcementImage_670d8528',
+    imageOverlay: 'imageOverlay_670d8528',
+    celebrationIcon: 'celebrationIcon_670d8528',
+    topLeft: 'topLeft_670d8528',
+    topRight: 'topRight_670d8528',
+    bottomLeft: 'bottomLeft_670d8528',
+    bottomRight: 'bottomRight_670d8528',
+    center: 'center_670d8528',
+    celebrationEmoji: 'celebrationEmoji_670d8528',
+    bounce: 'bounce_670d8528',
+    pulse: 'pulse_670d8528',
+    wave: 'wave_670d8528',
+    shine: 'shine_670d8528',
+    sparkle: 'sparkle_670d8528',
+    contentContainer: 'contentContainer_670d8528',
+    announcementTitle: 'announcementTitle_670d8528',
+    announcementDescription: 'announcementDescription_670d8528',
+    dateInfo: 'dateInfo_670d8528',
+    dateLabel: 'dateLabel_670d8528',
+    navigationDots: 'navigationDots_670d8528',
+    dot: 'dot_670d8528',
+    activeDot: 'activeDot_670d8528',
+    navButton: 'navButton_670d8528',
+    prevButton: 'prevButton_670d8528',
+    nextButton: 'nextButton_670d8528',
+    playPauseButton: 'playPauseButton_670d8528'
 };
 /* harmony default export */ __webpack_exports__["e"] = (styles);
 /* tslint:enable */ 

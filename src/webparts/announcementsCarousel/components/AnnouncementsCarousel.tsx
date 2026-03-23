@@ -6,7 +6,7 @@ import { CelebrationIconService } from '../services/CelebrationIconService';
 import { ListProvisioningService } from '../services/ListProvisioningService';
 import { PermissionService } from '../services/PermissionService';
 import AnnouncementManagePanel from './AnnouncementManagePanel';
-import { Spinner, SpinnerSize, MessageBar, MessageBarType, IconButton, DefaultButton } from '@fluentui/react';
+import { Spinner, SpinnerSize, MessageBar, MessageBarType, Icon, IconButton, DefaultButton } from '@fluentui/react';
 import styles from './AnnouncementsCarousel.module.scss';
 
 export interface IAnnouncementsCarouselState {
@@ -446,12 +446,45 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
     }
 
     if (announcements.length === 0) {
+      const bgType = this.props.emptyStateBackgroundType || 'gradient';
+      const emptyStateStyle: React.CSSProperties = {};
+
+      if (bgType === 'solid') {
+        emptyStateStyle.background = this.props.emptyStateBackgroundColor || '#f5f7fa';
+      } else if (bgType === 'image') {
+        const imgUrl = this.props.emptyStateBackgroundImage;
+        if (imgUrl) {
+          emptyStateStyle.backgroundImage = `url('${imgUrl}')`;
+          emptyStateStyle.backgroundSize = 'cover';
+          emptyStateStyle.backgroundPosition = 'center';
+        }
+      } else {
+        const start = this.props.emptyStateGradientStart || '#f5f7fa';
+        const end = this.props.emptyStateGradientEnd || '#e4e8ee';
+        const dir = this.props.emptyStateGradientDirection != null ? this.props.emptyStateGradientDirection : 135;
+        emptyStateStyle.background = `linear-gradient(${dir}deg, ${start} 0%, ${end} 100%)`;
+      }
+
       return (
         <div className={styles.announcementsCarousel}>
           {this.renderManageButton()}
-          <MessageBar messageBarType={MessageBarType.info}>
-            No active announcements to display. Add announcements to the &quot;{this.props.listName}&quot; list to get started.
-          </MessageBar>
+          <div className={styles.emptyState} style={emptyStateStyle}>
+            <div
+              className={styles.emptyStateIconWrapper}
+              style={{ color: this.props.emptyStateIconColor }}
+            >
+              <Icon
+                iconName={this.props.emptyStateIcon}
+                className={styles.emptyStateIcon}
+              />
+            </div>
+            <p
+              className={styles.emptyStateMessage}
+              style={{ color: this.props.emptyStateTextColor || '#444444' }}
+            >
+              {this.props.emptyStateMessage}
+            </p>
+          </div>
         </div>
       );
     }
