@@ -9,7 +9,7 @@ const SELECT_FIELDS = [
   'ImageHeight', 'ImageWidth', 'ImageFit', 'ImageSizeMode',
   'ImageBackgroundType', 'ImageBackgroundColor',
   'BackgroundColor', 'TitleColor', 'DescriptionColor',
-  'CardHeight', 'BorderRadius', 'ShowShadow', 'ShowCelebrationIcon', 'CelebrationIconSize',
+  'BorderRadius', 'ShowShadow', 'ShowCelebrationIcon', 'CelebrationIconSize',
   'GradientStartColor', 'GradientEndColor', 'GradientDirection',
   'OverlayGradientColor', 'OverlayOpacity',
   'RedirectUrl', 'RedirectTarget'
@@ -135,7 +135,6 @@ export class AnnouncementDataService {
       BackgroundColor: item.BackgroundColor || '#ffffff',
       TitleColor: item.TitleColor || '#333333',
       DescriptionColor: item.DescriptionColor || '#333333',
-      CardHeight: item.CardHeight || 500,
       BorderRadius: item.BorderRadius != null ? item.BorderRadius : 8,
       ShowShadow: item.ShowShadow != null ? item.ShowShadow : true,
       ShowCelebrationIcon: item.ShowCelebrationIcon != null ? item.ShowCelebrationIcon : true,
@@ -184,7 +183,6 @@ export class AnnouncementDataService {
       if (announcement.BackgroundColor) itemData.BackgroundColor = announcement.BackgroundColor;
       if (announcement.TitleColor) itemData.TitleColor = announcement.TitleColor;
       if (announcement.DescriptionColor) itemData.DescriptionColor = announcement.DescriptionColor;
-      if (announcement.CardHeight && announcement.CardHeight >= 200) itemData.CardHeight = announcement.CardHeight;
       if (announcement.BorderRadius != null && announcement.BorderRadius >= 0) itemData.BorderRadius = announcement.BorderRadius;
       if (announcement.ShowShadow != null) itemData.ShowShadow = announcement.ShowShadow;
       if (announcement.ShowCelebrationIcon != null) itemData.ShowCelebrationIcon = announcement.ShowCelebrationIcon;
@@ -262,7 +260,6 @@ export class AnnouncementDataService {
       if (announcement.BackgroundColor !== undefined) itemData.BackgroundColor = announcement.BackgroundColor;
       if (announcement.TitleColor !== undefined) itemData.TitleColor = announcement.TitleColor;
       if (announcement.DescriptionColor !== undefined) itemData.DescriptionColor = announcement.DescriptionColor;
-      if (announcement.CardHeight !== undefined && announcement.CardHeight >= 200) itemData.CardHeight = announcement.CardHeight;
       if (announcement.BorderRadius !== undefined && announcement.BorderRadius >= 0) itemData.BorderRadius = announcement.BorderRadius;
       if (announcement.ShowShadow !== undefined) itemData.ShowShadow = announcement.ShowShadow;
       if (announcement.ShowCelebrationIcon !== undefined) itemData.ShowCelebrationIcon = announcement.ShowCelebrationIcon;

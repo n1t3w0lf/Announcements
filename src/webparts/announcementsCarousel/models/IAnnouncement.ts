@@ -43,8 +43,6 @@ export interface IAnnouncement {
   TitleColor?: string;
   /** Description text color (hex). */
   DescriptionColor?: string;
-  /** Overall card height in px. */
-  CardHeight?: number;
   /** Border radius in px. */
   BorderRadius?: number;
   /** Whether to show a drop shadow on the card. */
@@ -114,7 +112,6 @@ export interface IAnnouncementListItem {
   BackgroundColor: string;
   TitleColor: string;
   DescriptionColor: string;
-  CardHeight: number;
   BorderRadius: number;
   ShowShadow: boolean;
   ShowCelebrationIcon: boolean;
@@ -150,7 +147,6 @@ export interface IAnnouncementFormData {
   BackgroundColor: string;
   TitleColor: string;
   DescriptionColor: string;
-  CardHeight: string;
   BorderRadius: string;
   ShowShadow: string;
   ShowCelebrationIcon: string;
@@ -184,7 +180,6 @@ export function createEmptyFormData(): IAnnouncementFormData {
     BackgroundColor: '#ffffff',
     TitleColor: '#333333',
     DescriptionColor: '#333333',
-    CardHeight: '500',
     BorderRadius: '8',
     ShowShadow: 'true',
     ShowCelebrationIcon: 'true',

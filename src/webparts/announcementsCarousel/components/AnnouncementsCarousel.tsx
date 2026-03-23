@@ -235,7 +235,6 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
     const gradientDir = announcement.GradientDirection != null ? announcement.GradientDirection : 135;
     const overlayColor = announcement.OverlayGradientColor || '#000000';
     const overlayOpacity = announcement.OverlayOpacity != null ? announcement.OverlayOpacity : 30;
-    const cardHeight = announcement.CardHeight || 500;
     const bgColor = announcement.BackgroundColor || '#ffffff';
     const borderRadius = announcement.BorderRadius != null ? announcement.BorderRadius : 8;
     const showShadow = announcement.ShowShadow != null ? announcement.ShowShadow : true;
@@ -321,7 +320,6 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
     );
 
     const slideStyle: React.CSSProperties = {
-      height: `${cardHeight}px`,
       backgroundColor: bgColor,
       borderRadius: `${borderRadius}px`,
       boxShadow: showShadow ? '0 4px 20px rgba(0,0,0,0.15)' : 'none'

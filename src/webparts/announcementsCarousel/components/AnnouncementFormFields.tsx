@@ -424,30 +424,15 @@ const AnnouncementFormFields: React.FC<IAnnouncementFormFieldsProps> = (props) =
       </Stack>
 
       {/* Layout */}
-      <Stack horizontal tokens={{ childrenGap: 16 }}>
-        <Stack.Item grow={1}>
-          <TextField
-            label="Card Height (px)"
-            type="number"
-            value={formData.CardHeight}
-            onChange={(_, newValue) => onFieldChange('CardHeight', newValue || '')}
-            min={200}
-            max={1000}
-            disabled={isSubmitting}
-          />
-        </Stack.Item>
-        <Stack.Item grow={1}>
-          <TextField
-            label="Border Radius (px)"
-            type="number"
-            value={formData.BorderRadius}
-            onChange={(_, newValue) => onFieldChange('BorderRadius', newValue || '')}
-            min={0}
-            max={50}
-            disabled={isSubmitting}
-          />
-        </Stack.Item>
-      </Stack>
+      <TextField
+        label="Border Radius (px)"
+        type="number"
+        value={formData.BorderRadius}
+        onChange={(_, newValue) => onFieldChange('BorderRadius', newValue || '')}
+        min={0}
+        max={50}
+        disabled={isSubmitting}
+      />
 
       <Stack horizontal tokens={{ childrenGap: 16 }}>
         <Stack.Item grow={1}>

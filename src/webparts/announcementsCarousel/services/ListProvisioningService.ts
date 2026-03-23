@@ -238,15 +238,6 @@ export class ListProvisioningService {
       {
         '__metadata': { 'type': 'SP.FieldNumber' },
         'FieldTypeKind': 9,
-        'Title': 'CardHeight',
-        'Required': false,
-        'MinimumValue': 200,
-        'MaximumValue': 1000,
-        'Description': 'Card height in pixels.'
-      },
-      {
-        '__metadata': { 'type': 'SP.FieldNumber' },
-        'FieldTypeKind': 9,
         'Title': 'BorderRadius',
         'Required': false,
         'MinimumValue': 0,
