@@ -42,14 +42,18 @@ export default class AnnouncementsCarousel extends React.Component<IAnnouncement
   }
 
   public async componentDidMount(): Promise<void> {
+    // Run permission check in parallel with list provisioning + data load
+    const ownerPromise = PermissionService.checkIsOwner(this.props.context)
+      .then(isOwner => this.setState({ isOwner }))
+      .catch(() => { /* never block carousel */ });
+
     const listReady = await this.ensureListExists();
     if (listReady) {
       await this.loadAnnouncements();
       this.startRotation();
     }
 
-    const currentUserIsOwner = await PermissionService.checkIsOwner(this.props.context);
-    this.setState({ isOwner: currentUserIsOwner });
+    await ownerPromise;
   }
 
   public componentWillUnmount(): void {

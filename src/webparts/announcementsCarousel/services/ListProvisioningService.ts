@@ -5,6 +5,9 @@ export class ListProvisioningService {
   private static readonly LIST_NAME = 'Announcements Carousel';
   private static readonly LIST_DESCRIPTION = 'Stores announcements and celebrations for the carousel web part';
 
+  /** Skip column verification after first successful check within a browser session. */
+  private static columnsVerified = false;
+
   public static async ensureList(context: WebPartContext): Promise<boolean> {
     try {
       // Check if list exists
@@ -29,12 +32,16 @@ export class ListProvisioningService {
           await this.delay(2000);
         }
 
+        this.columnsVerified = true;
         console.log('List is ready');
         return true;
       } else {
         console.log('List already exists');
-        // Verify all columns exist
-        await this.verifyColumns(context);
+        // Only verify columns once per browser session
+        if (!this.columnsVerified) {
+          await this.verifyColumns(context);
+          this.columnsVerified = true;
+        }
         return true;
       }
     } catch (error) {
@@ -61,11 +68,13 @@ export class ListProvisioningService {
     }
   }
 
+  /**
+   * Creates the list. Uses odata=nometadata — no type annotations needed for list creation.
+   */
   private static async createList(context: WebPartContext): Promise<void> {
     const endpoint = `${context.pageContext.web.absoluteUrl}/_api/web/lists`;
 
     const listData = {
-      '@odata.type': 'SP.List',
       'BaseTemplate': 100,
       'Title': this.LIST_NAME,
       'Description': this.LIST_DESCRIPTION,
@@ -78,8 +87,9 @@ export class ListProvisioningService {
       SPHttpClient.configurations.v1,
       {
         headers: {
-          'Accept': 'application/json;odata=minimalmetadata',
-          'Content-Type': 'application/json;odata=minimalmetadata'
+          'Accept': 'application/json;odata=nometadata',
+          'Content-Type': 'application/json;odata=nometadata',
+          'odata-version': ''
         },
         body: JSON.stringify(listData)
       }
@@ -91,13 +101,15 @@ export class ListProvisioningService {
     }
   }
 
-  private static async createColumns(context: WebPartContext): Promise<void> {
-    const baseUrl = `${context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.LIST_NAME}')/fields`;
-
-    // Define columns with proper metadata
-    const columns = [
+  /**
+   * Returns all column definitions in odata=verbose format.
+   * - Uses __metadata.type instead of @odata.type
+   * - Wraps Choices arrays as { results: [...] } (required by verbose format)
+   */
+  private static getColumnDefinitions(): any[] {
+    return [
       {
-        '@odata.type': 'SP.FieldMultiLineText',
+        '__metadata': { 'type': 'SP.FieldMultiLineText' },
         'FieldTypeKind': 3,
         'Title': 'Description',
         'Required': false,
@@ -105,49 +117,49 @@ export class ListProvisioningService {
         'NumberOfLines': 6
       },
       {
-        '@odata.type': 'SP.FieldUrl',
+        '__metadata': { 'type': 'SP.FieldUrl' },
         'FieldTypeKind': 11,
         'Title': 'AnnouncementImage',
         'Required': false
       },
       {
-        '@odata.type': 'SP.FieldDateTime',
+        '__metadata': { 'type': 'SP.FieldDateTime' },
         'FieldTypeKind': 4,
         'Title': 'ValidFrom',
         'Required': true,
         'DisplayFormat': 1
       },
       {
-        '@odata.type': 'SP.FieldDateTime',
+        '__metadata': { 'type': 'SP.FieldDateTime' },
         'FieldTypeKind': 4,
         'Title': 'ValidTo',
         'Required': true,
         'DisplayFormat': 1
       },
       {
-        '@odata.type': 'SP.FieldChoice',
+        '__metadata': { 'type': 'SP.FieldChoice' },
         'FieldTypeKind': 6,
         'Title': 'CelebrationIcon',
         'Required': false,
-        'Choices': ['None', 'Birthday', 'Anniversary', 'Achievement', 'Celebration', 'NewHire', 'Promotion', 'Holiday', 'Custom'],
+        'Choices': { 'results': ['None', 'Birthday', 'Anniversary', 'Achievement', 'Celebration', 'NewHire', 'Promotion', 'Holiday', 'Custom'] },
         'DefaultValue': 'None'
       },
       {
-        '@odata.type': 'SP.FieldChoice',
+        '__metadata': { 'type': 'SP.FieldChoice' },
         'FieldTypeKind': 6,
         'Title': 'CelebrationIconPosition',
         'Required': false,
-        'Choices': ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'center'],
+        'Choices': { 'results': ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'center'] },
         'DefaultValue': 'topRight'
       },
       {
-        '@odata.type': 'SP.FieldUrl',
+        '__metadata': { 'type': 'SP.FieldUrl' },
         'FieldTypeKind': 11,
         'Title': 'CustomIconUrl',
         'Required': false
       },
       {
-        '@odata.type': 'SP.FieldNumber',
+        '__metadata': { 'type': 'SP.FieldNumber' },
         'FieldTypeKind': 9,
         'Title': 'ImageHeight',
         'Required': false,
@@ -156,7 +168,7 @@ export class ListProvisioningService {
         'Description': 'Image container height in pixels. Leave empty to use the web part default.'
       },
       {
-        '@odata.type': 'SP.FieldNumber',
+        '__metadata': { 'type': 'SP.FieldNumber' },
         'FieldTypeKind': 9,
         'Title': 'ImageWidth',
         'Required': false,
@@ -165,34 +177,34 @@ export class ListProvisioningService {
         'Description': 'Image width in pixels. Leave empty to use the web part default.'
       },
       {
-        '@odata.type': 'SP.FieldChoice',
+        '__metadata': { 'type': 'SP.FieldChoice' },
         'FieldTypeKind': 6,
         'Title': 'ImageFit',
         'Required': false,
-        'Choices': ['cover', 'contain', 'fill', 'none'],
+        'Choices': { 'results': ['cover', 'contain', 'fill', 'none'] },
         'DefaultValue': 'cover',
         'Description': 'How the image fills its container.'
       },
       {
-        '@odata.type': 'SP.FieldChoice',
+        '__metadata': { 'type': 'SP.FieldChoice' },
         'FieldTypeKind': 6,
         'Title': 'ImageSizeMode',
         'Required': false,
-        'Choices': ['fit', 'manual'],
+        'Choices': { 'results': ['fit', 'manual'] },
         'DefaultValue': 'fit',
         'Description': 'Whether image uses CSS fit mode or manual pixel dimensions.'
       },
       {
-        '@odata.type': 'SP.FieldChoice',
+        '__metadata': { 'type': 'SP.FieldChoice' },
         'FieldTypeKind': 6,
         'Title': 'ImageBackgroundType',
         'Required': false,
-        'Choices': ['solid', 'gradient'],
+        'Choices': { 'results': ['solid', 'gradient'] },
         'DefaultValue': 'gradient',
         'Description': 'Whether image container background is a solid color or gradient.'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 2,
         'Title': 'ImageBackgroundColor',
         'Required': false,
@@ -200,7 +212,7 @@ export class ListProvisioningService {
         'Description': 'Solid background color for image container (hex).'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 2,
         'Title': 'BackgroundColor',
         'Required': false,
@@ -208,7 +220,7 @@ export class ListProvisioningService {
         'Description': 'Card background color (hex).'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 2,
         'Title': 'TitleColor',
         'Required': false,
@@ -216,7 +228,7 @@ export class ListProvisioningService {
         'Description': 'Title text color (hex).'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 2,
         'Title': 'DescriptionColor',
         'Required': false,
@@ -224,7 +236,7 @@ export class ListProvisioningService {
         'Description': 'Description text color (hex).'
       },
       {
-        '@odata.type': 'SP.FieldNumber',
+        '__metadata': { 'type': 'SP.FieldNumber' },
         'FieldTypeKind': 9,
         'Title': 'CardHeight',
         'Required': false,
@@ -233,7 +245,7 @@ export class ListProvisioningService {
         'Description': 'Card height in pixels.'
       },
       {
-        '@odata.type': 'SP.FieldNumber',
+        '__metadata': { 'type': 'SP.FieldNumber' },
         'FieldTypeKind': 9,
         'Title': 'BorderRadius',
         'Required': false,
@@ -242,7 +254,7 @@ export class ListProvisioningService {
         'Description': 'Border radius in pixels.'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 8,
         'Title': 'ShowShadow',
         'Required': false,
@@ -250,7 +262,7 @@ export class ListProvisioningService {
         'Description': 'Show drop shadow on card.'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 8,
         'Title': 'ShowCelebrationIcon',
         'Required': false,
@@ -258,7 +270,7 @@ export class ListProvisioningService {
         'Description': 'Show celebration icon.'
       },
       {
-        '@odata.type': 'SP.FieldNumber',
+        '__metadata': { 'type': 'SP.FieldNumber' },
         'FieldTypeKind': 9,
         'Title': 'CelebrationIconSize',
         'Required': false,
@@ -267,7 +279,7 @@ export class ListProvisioningService {
         'Description': 'Celebration icon size in pixels.'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 2,
         'Title': 'GradientStartColor',
         'Required': false,
@@ -275,7 +287,7 @@ export class ListProvisioningService {
         'Description': 'Image background gradient start color (hex).'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 2,
         'Title': 'GradientEndColor',
         'Required': false,
@@ -283,7 +295,7 @@ export class ListProvisioningService {
         'Description': 'Image background gradient end color (hex).'
       },
       {
-        '@odata.type': 'SP.FieldNumber',
+        '__metadata': { 'type': 'SP.FieldNumber' },
         'FieldTypeKind': 9,
         'Title': 'GradientDirection',
         'Required': false,
@@ -292,7 +304,7 @@ export class ListProvisioningService {
         'Description': 'Gradient direction in degrees.'
       },
       {
-        '@odata.type': 'SP.Field',
+        '__metadata': { 'type': 'SP.Field' },
         'FieldTypeKind': 2,
         'Title': 'OverlayGradientColor',
         'Required': false,
@@ -300,7 +312,7 @@ export class ListProvisioningService {
         'Description': 'Overlay gradient color (hex).'
       },
       {
-        '@odata.type': 'SP.FieldNumber',
+        '__metadata': { 'type': 'SP.FieldNumber' },
         'FieldTypeKind': 9,
         'Title': 'OverlayOpacity',
         'Required': false,
@@ -309,22 +321,37 @@ export class ListProvisioningService {
         'Description': 'Overlay opacity percentage.'
       },
       {
-        '@odata.type': 'SP.FieldUrl',
+        '__metadata': { 'type': 'SP.FieldUrl' },
         'FieldTypeKind': 11,
         'Title': 'RedirectUrl',
         'Required': false,
         'Description': 'Optional URL to navigate to when the announcement is clicked.'
       },
       {
-        '@odata.type': 'SP.FieldChoice',
+        '__metadata': { 'type': 'SP.FieldChoice' },
         'FieldTypeKind': 6,
         'Title': 'RedirectTarget',
         'Required': false,
-        'Choices': ['_self', '_blank'],
+        'Choices': { 'results': ['_self', '_blank'] },
         'DefaultValue': '_self',
         'Description': 'Open redirect URL in same tab or new tab.'
       }
     ];
+  }
+
+  /**
+   * Creates columns sequentially using odata=verbose Content-Type.
+   * Verbose format is required for typed fields (Choice, MultiLineText, etc.)
+   * that need __metadata.type and { results: [...] } for Choices arrays.
+   * Accept header remains nometadata for cleaner responses.
+   */
+  private static async createColumns(context: WebPartContext, onlyColumns?: string[]): Promise<void> {
+    const baseUrl = `${context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.LIST_NAME}')/fields`;
+
+    let columns = this.getColumnDefinitions();
+    if (onlyColumns && onlyColumns.length > 0) {
+      columns = columns.filter(col => onlyColumns.includes(col.Title));
+    }
 
     for (const column of columns) {
       try {
@@ -333,8 +360,9 @@ export class ListProvisioningService {
           SPHttpClient.configurations.v1,
           {
             headers: {
-              'Accept': 'application/json;odata=minimalmetadata',
-              'Content-Type': 'application/json;odata=minimalmetadata'
+              'Accept': 'application/json;odata=nometadata',
+              'Content-Type': 'application/json;odata=verbose',
+              'odata-version': ''
             },
             body: JSON.stringify(column)
           }
@@ -353,8 +381,8 @@ export class ListProvisioningService {
   }
 
   private static async verifyColumns(context: WebPartContext): Promise<void> {
-    // Check if all required columns exist, if not create them
-    const requiredColumns = ['Description', 'AnnouncementImage', 'ValidFrom', 'ValidTo', 'CelebrationIcon', 'CelebrationIconPosition', 'CustomIconUrl', 'ImageHeight', 'ImageWidth', 'ImageFit', 'ImageSizeMode', 'ImageBackgroundType', 'ImageBackgroundColor', 'BackgroundColor', 'TitleColor', 'DescriptionColor', 'CardHeight', 'BorderRadius', 'ShowShadow', 'ShowCelebrationIcon', 'CelebrationIconSize', 'GradientStartColor', 'GradientEndColor', 'GradientDirection', 'OverlayGradientColor', 'OverlayOpacity', 'RedirectUrl', 'RedirectTarget'];
+    const allColumns = this.getColumnDefinitions();
+    const requiredColumns = allColumns.map(col => col.Title);
     const endpoint = `${context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.LIST_NAME}')/fields?$select=Title`;
 
     try {
@@ -369,8 +397,8 @@ export class ListProvisioningService {
         const missingColumns = requiredColumns.filter(col => !existingColumns.includes(col));
 
         if (missingColumns.length > 0) {
-          console.log('Missing columns detected, creating them...');
-          await this.createColumns(context);
+          console.log(`Missing columns detected: ${missingColumns.join(', ')}. Creating only those...`);
+          await this.createColumns(context, missingColumns);
         }
       }
     } catch (error) {
@@ -379,7 +407,6 @@ export class ListProvisioningService {
   }
 
   private static async configureListSettings(context: WebPartContext): Promise<void> {
-    // Configure list view to show relevant columns
     const endpoint = `${context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.LIST_NAME}')/DefaultView/ViewFields`;
 
     const viewFields = ['Title', 'Description', 'AnnouncementImage', 'ValidFrom', 'ValidTo', 'CelebrationIcon'];
@@ -391,8 +418,9 @@ export class ListProvisioningService {
           SPHttpClient.configurations.v1,
           {
             headers: {
-              'Accept': 'application/json;odata=minimalmetadata',
-              'Content-Type': 'application/json;odata=minimalmetadata'
+              'Accept': 'application/json;odata=nometadata',
+              'Content-Type': 'application/json;odata=nometadata',
+              'odata-version': ''
             }
           }
         );

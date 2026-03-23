@@ -174,8 +174,8 @@ export class AnnouncementDataService {
       if (announcement.CelebrationIconPosition) itemData.CelebrationIconPosition = announcement.CelebrationIconPosition;
       if (announcement.CustomIconUrl) itemData.CustomIconUrl = { 'Url': announcement.CustomIconUrl };
 
-      if (announcement.ImageHeight) itemData.ImageHeight = announcement.ImageHeight;
-      if (announcement.ImageWidth != null) itemData.ImageWidth = announcement.ImageWidth;
+      if (announcement.ImageHeight && announcement.ImageHeight >= 100) itemData.ImageHeight = announcement.ImageHeight;
+      if (announcement.ImageWidth && announcement.ImageWidth >= 100) itemData.ImageWidth = announcement.ImageWidth;
       if (announcement.ImageFit) itemData.ImageFit = announcement.ImageFit;
       if (announcement.ImageSizeMode) itemData.ImageSizeMode = announcement.ImageSizeMode;
       if (announcement.ImageBackgroundType) itemData.ImageBackgroundType = announcement.ImageBackgroundType;
@@ -184,11 +184,11 @@ export class AnnouncementDataService {
       if (announcement.BackgroundColor) itemData.BackgroundColor = announcement.BackgroundColor;
       if (announcement.TitleColor) itemData.TitleColor = announcement.TitleColor;
       if (announcement.DescriptionColor) itemData.DescriptionColor = announcement.DescriptionColor;
-      if (announcement.CardHeight) itemData.CardHeight = announcement.CardHeight;
-      if (announcement.BorderRadius != null) itemData.BorderRadius = announcement.BorderRadius;
+      if (announcement.CardHeight && announcement.CardHeight >= 200) itemData.CardHeight = announcement.CardHeight;
+      if (announcement.BorderRadius != null && announcement.BorderRadius >= 0) itemData.BorderRadius = announcement.BorderRadius;
       if (announcement.ShowShadow != null) itemData.ShowShadow = announcement.ShowShadow;
       if (announcement.ShowCelebrationIcon != null) itemData.ShowCelebrationIcon = announcement.ShowCelebrationIcon;
-      if (announcement.CelebrationIconSize) itemData.CelebrationIconSize = announcement.CelebrationIconSize;
+      if (announcement.CelebrationIconSize && announcement.CelebrationIconSize >= 20) itemData.CelebrationIconSize = announcement.CelebrationIconSize;
       if (announcement.GradientStartColor) itemData.GradientStartColor = announcement.GradientStartColor;
       if (announcement.GradientEndColor) itemData.GradientEndColor = announcement.GradientEndColor;
       if (announcement.GradientDirection != null) itemData.GradientDirection = announcement.GradientDirection;
@@ -252,8 +252,8 @@ export class AnnouncementDataService {
       if (announcement.CelebrationIconPosition !== undefined) itemData.CelebrationIconPosition = announcement.CelebrationIconPosition;
       if (announcement.CustomIconUrl !== undefined) itemData.CustomIconUrl = { 'Url': announcement.CustomIconUrl };
 
-      if (announcement.ImageHeight !== undefined) itemData.ImageHeight = announcement.ImageHeight;
-      if (announcement.ImageWidth !== undefined) itemData.ImageWidth = announcement.ImageWidth;
+      if (announcement.ImageHeight !== undefined && announcement.ImageHeight >= 100) itemData.ImageHeight = announcement.ImageHeight;
+      if (announcement.ImageWidth !== undefined && announcement.ImageWidth >= 100) itemData.ImageWidth = announcement.ImageWidth;
       if (announcement.ImageFit !== undefined) itemData.ImageFit = announcement.ImageFit;
       if (announcement.ImageSizeMode !== undefined) itemData.ImageSizeMode = announcement.ImageSizeMode;
       if (announcement.ImageBackgroundType !== undefined) itemData.ImageBackgroundType = announcement.ImageBackgroundType;
@@ -262,11 +262,11 @@ export class AnnouncementDataService {
       if (announcement.BackgroundColor !== undefined) itemData.BackgroundColor = announcement.BackgroundColor;
       if (announcement.TitleColor !== undefined) itemData.TitleColor = announcement.TitleColor;
       if (announcement.DescriptionColor !== undefined) itemData.DescriptionColor = announcement.DescriptionColor;
-      if (announcement.CardHeight !== undefined) itemData.CardHeight = announcement.CardHeight;
-      if (announcement.BorderRadius !== undefined) itemData.BorderRadius = announcement.BorderRadius;
+      if (announcement.CardHeight !== undefined && announcement.CardHeight >= 200) itemData.CardHeight = announcement.CardHeight;
+      if (announcement.BorderRadius !== undefined && announcement.BorderRadius >= 0) itemData.BorderRadius = announcement.BorderRadius;
       if (announcement.ShowShadow !== undefined) itemData.ShowShadow = announcement.ShowShadow;
       if (announcement.ShowCelebrationIcon !== undefined) itemData.ShowCelebrationIcon = announcement.ShowCelebrationIcon;
-      if (announcement.CelebrationIconSize !== undefined) itemData.CelebrationIconSize = announcement.CelebrationIconSize;
+      if (announcement.CelebrationIconSize !== undefined && announcement.CelebrationIconSize >= 20) itemData.CelebrationIconSize = announcement.CelebrationIconSize;
       if (announcement.GradientStartColor !== undefined) itemData.GradientStartColor = announcement.GradientStartColor;
       if (announcement.GradientEndColor !== undefined) itemData.GradientEndColor = announcement.GradientEndColor;
       if (announcement.GradientDirection !== undefined) itemData.GradientDirection = announcement.GradientDirection;
