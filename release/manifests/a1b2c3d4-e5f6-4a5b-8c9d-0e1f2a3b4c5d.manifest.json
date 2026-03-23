@@ -55,7 +55,7 @@
     "scriptResources": {
       "announcements-carousel-web-part": {
         "type": "path",
-        "path": "announcements-carousel-web-part.js"
+        "path": "announcements-carousel-web-part_8d06228c0fa8343dc6b5.js"
       },
       "@microsoft/sp-property-pane": {
         "type": "component",
