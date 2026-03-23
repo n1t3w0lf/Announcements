@@ -145,6 +145,184 @@ export class ListProvisioningService {
         'FieldTypeKind': 11,
         'Title': 'CustomIconUrl',
         'Required': false
+      },
+      {
+        '@odata.type': 'SP.FieldNumber',
+        'FieldTypeKind': 9,
+        'Title': 'ImageHeight',
+        'Required': false,
+        'MinimumValue': 100,
+        'MaximumValue': 1200,
+        'Description': 'Image container height in pixels. Leave empty to use the web part default.'
+      },
+      {
+        '@odata.type': 'SP.FieldNumber',
+        'FieldTypeKind': 9,
+        'Title': 'ImageWidth',
+        'Required': false,
+        'MinimumValue': 100,
+        'MaximumValue': 2000,
+        'Description': 'Image width in pixels. Leave empty to use the web part default.'
+      },
+      {
+        '@odata.type': 'SP.FieldChoice',
+        'FieldTypeKind': 6,
+        'Title': 'ImageFit',
+        'Required': false,
+        'Choices': ['cover', 'contain', 'fill', 'none'],
+        'DefaultValue': 'cover',
+        'Description': 'How the image fills its container.'
+      },
+      {
+        '@odata.type': 'SP.FieldChoice',
+        'FieldTypeKind': 6,
+        'Title': 'ImageSizeMode',
+        'Required': false,
+        'Choices': ['fit', 'manual'],
+        'DefaultValue': 'fit',
+        'Description': 'Whether image uses CSS fit mode or manual pixel dimensions.'
+      },
+      {
+        '@odata.type': 'SP.FieldChoice',
+        'FieldTypeKind': 6,
+        'Title': 'ImageBackgroundType',
+        'Required': false,
+        'Choices': ['solid', 'gradient'],
+        'DefaultValue': 'gradient',
+        'Description': 'Whether image container background is a solid color or gradient.'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 2,
+        'Title': 'ImageBackgroundColor',
+        'Required': false,
+        'DefaultValue': '#667eea',
+        'Description': 'Solid background color for image container (hex).'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 2,
+        'Title': 'BackgroundColor',
+        'Required': false,
+        'DefaultValue': '#ffffff',
+        'Description': 'Card background color (hex).'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 2,
+        'Title': 'TitleColor',
+        'Required': false,
+        'DefaultValue': '#333333',
+        'Description': 'Title text color (hex).'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 2,
+        'Title': 'DescriptionColor',
+        'Required': false,
+        'DefaultValue': '#333333',
+        'Description': 'Description text color (hex).'
+      },
+      {
+        '@odata.type': 'SP.FieldNumber',
+        'FieldTypeKind': 9,
+        'Title': 'CardHeight',
+        'Required': false,
+        'MinimumValue': 200,
+        'MaximumValue': 1000,
+        'Description': 'Card height in pixels.'
+      },
+      {
+        '@odata.type': 'SP.FieldNumber',
+        'FieldTypeKind': 9,
+        'Title': 'BorderRadius',
+        'Required': false,
+        'MinimumValue': 0,
+        'MaximumValue': 50,
+        'Description': 'Border radius in pixels.'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 8,
+        'Title': 'ShowShadow',
+        'Required': false,
+        'DefaultValue': '1',
+        'Description': 'Show drop shadow on card.'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 8,
+        'Title': 'ShowCelebrationIcon',
+        'Required': false,
+        'DefaultValue': '1',
+        'Description': 'Show celebration icon.'
+      },
+      {
+        '@odata.type': 'SP.FieldNumber',
+        'FieldTypeKind': 9,
+        'Title': 'CelebrationIconSize',
+        'Required': false,
+        'MinimumValue': 20,
+        'MaximumValue': 200,
+        'Description': 'Celebration icon size in pixels.'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 2,
+        'Title': 'GradientStartColor',
+        'Required': false,
+        'DefaultValue': '#667eea',
+        'Description': 'Image background gradient start color (hex).'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 2,
+        'Title': 'GradientEndColor',
+        'Required': false,
+        'DefaultValue': '#764ba2',
+        'Description': 'Image background gradient end color (hex).'
+      },
+      {
+        '@odata.type': 'SP.FieldNumber',
+        'FieldTypeKind': 9,
+        'Title': 'GradientDirection',
+        'Required': false,
+        'MinimumValue': 0,
+        'MaximumValue': 360,
+        'Description': 'Gradient direction in degrees.'
+      },
+      {
+        '@odata.type': 'SP.Field',
+        'FieldTypeKind': 2,
+        'Title': 'OverlayGradientColor',
+        'Required': false,
+        'DefaultValue': '#000000',
+        'Description': 'Overlay gradient color (hex).'
+      },
+      {
+        '@odata.type': 'SP.FieldNumber',
+        'FieldTypeKind': 9,
+        'Title': 'OverlayOpacity',
+        'Required': false,
+        'MinimumValue': 0,
+        'MaximumValue': 100,
+        'Description': 'Overlay opacity percentage.'
+      },
+      {
+        '@odata.type': 'SP.FieldUrl',
+        'FieldTypeKind': 11,
+        'Title': 'RedirectUrl',
+        'Required': false,
+        'Description': 'Optional URL to navigate to when the announcement is clicked.'
+      },
+      {
+        '@odata.type': 'SP.FieldChoice',
+        'FieldTypeKind': 6,
+        'Title': 'RedirectTarget',
+        'Required': false,
+        'Choices': ['_self', '_blank'],
+        'DefaultValue': '_self',
+        'Description': 'Open redirect URL in same tab or new tab.'
       }
     ];
 
@@ -176,7 +354,7 @@ export class ListProvisioningService {
 
   private static async verifyColumns(context: WebPartContext): Promise<void> {
     // Check if all required columns exist, if not create them
-    const requiredColumns = ['Description', 'AnnouncementImage', 'ValidFrom', 'ValidTo', 'CelebrationIcon', 'CelebrationIconPosition', 'CustomIconUrl'];
+    const requiredColumns = ['Description', 'AnnouncementImage', 'ValidFrom', 'ValidTo', 'CelebrationIcon', 'CelebrationIconPosition', 'CustomIconUrl', 'ImageHeight', 'ImageWidth', 'ImageFit', 'ImageSizeMode', 'ImageBackgroundType', 'ImageBackgroundColor', 'BackgroundColor', 'TitleColor', 'DescriptionColor', 'CardHeight', 'BorderRadius', 'ShowShadow', 'ShowCelebrationIcon', 'CelebrationIconSize', 'GradientStartColor', 'GradientEndColor', 'GradientDirection', 'OverlayGradientColor', 'OverlayOpacity', 'RedirectUrl', 'RedirectTarget'];
     const endpoint = `${context.pageContext.web.absoluteUrl}/_api/web/lists/getByTitle('${this.LIST_NAME}')/fields?$select=Title`;
 
     try {

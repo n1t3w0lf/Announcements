@@ -1,0 +1,115 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
+.managePanelContent {
+  padding: 0 24px 24px;
+
+  .panelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .panelTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: $ms-color-neutralPrimary;
+    margin: 0;
+  }
+
+  .formSection {
+    background: $ms-color-neutralLighterAlt;
+    border: 1px solid $ms-color-neutralLight;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    .formSectionTitle {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 16px 0;
+      color: $ms-color-themePrimary;
+    }
+  }
+
+  .statusBadge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+
+    &.activeBadge {
+      background: #dff6dd;
+      color: #107c10;
+    }
+
+    &.expiredBadge {
+      background: #fde7e9;
+      color: #a4262c;
+    }
+
+    &.scheduledBadge {
+      background: #fff4ce;
+      color: #7a5c00;
+    }
+  }
+
+  .listImageThumbnail {
+    width: 60px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid $ms-color-neutralLight;
+  }
+
+  .noImagePlaceholder {
+    width: 60px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $ms-color-neutralLighterAlt;
+    border: 1px dashed $ms-color-neutralTertiaryAlt;
+    border-radius: 4px;
+    font-size: 10px;
+    color: $ms-color-neutralTertiary;
+  }
+
+  .actionButtonsContainer {
+    display: flex;
+    gap: 4px;
+  }
+
+  .emptyStateContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+
+    .emptyStateIcon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .emptyStateMessage {
+      font-size: 14px;
+      color: $ms-color-neutralSecondary;
+      margin-bottom: 16px;
+    }
+  }
+
+  .loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+  }
+
+  .feedbackBar {
+    margin-bottom: 16px;
+  }
+}
